@@ -1,0 +1,4 @@
+.git
+config/.env.staging
+config/.env.development
+config/env.production
