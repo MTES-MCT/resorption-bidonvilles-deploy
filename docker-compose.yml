@@ -3,13 +3,13 @@ services:
     rb-api:
         build:
             context: ../action-bidonvilles-api
-            target: development
+            target: production
         container_name: rb_api
-        env_file: ./config/.env.sample
+        env_file: ./config/.env.staging
         depends_on:
             - rb-database
         ports:
-            - "1236:8080"
+            - "3000:3000"
         networks:
             - rb-network
 
@@ -18,14 +18,64 @@ services:
         container_name: rb_database
         volumes:
             - rb-pg-data:/var/lib/postgresql/data
-        env_file: ./config/.env.sample
+        env_file: ./config/.env.staging
         healthcheck:
             test: pg_isready -U postgres -h rb-database
         networks:
             - rb-network
 
+    rb-front:
+        build:
+            context: ../action-bidonvilles
+            target: production-stage
+        container_name: rb_front
+        # restart: unless-stopped
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx-conf-tweak/nginx-alpine.conf:/etc/nginx/nginx.conf
+            - ./nginx-conf:/etc/nginx/conf.d
+            - certbot-etc:/etc/letsencrypt
+            - certbot-var:/var/lib/letsencrypt
+            - ssl:/etc/ssl/
+            - web-root:/var/www/html
+            - dhparam:/etc/ssl/certs
+        depends_on:
+            - rb-api
+        networks:
+            - rb-network
+
+    rb-certbot:
+        image: certbot/certbot
+        container_name: rb_certbot
+        volumes:
+            - certbot-etc:/etc/letsencrypt
+            - certbot-var:/var/lib/letsencrypt
+            - ssl:/etc/ssl/
+            - web-root:/var/www/html
+        depends_on:
+            - rb-front
+        # command: certonly --webroot --webroot-path=/var/www/html --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --staging       -d preprod.resorption-bidonvilles.beta.gouv.fr  -d api.preprod.resorption-bidonvilles.beta.gouv.fr
+        # command: certonly --webroot --webroot-path=/var/www/html --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --force-renewal -d preprod.resorption-bidonvilles.beta.gouv.fr -d api.preprod.resorption-bidonvilles.beta.gouv.fr
+
 volumes:
     rb-pg-data:
+    certbot-etc:
+    certbot-var:
+    ssl:
+    web-root:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/rbadmin/rb-project/action-bidonvilles/dist
+            o: bind
+    dhparam:
+        driver: local
+        driver_opts:
+            type: none
+            device: /home/rbadmin/rb-project/action-bidonvilles-deploy/dhparam/
+            o: bind
 
 networks:
     rb-network:
