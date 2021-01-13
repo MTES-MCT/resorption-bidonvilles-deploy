@@ -8,6 +8,7 @@ services:
         env_file: ./config/.env.staging
         depends_on:
             - rb-database
+            - rb-mongo
         ports:
             - "3000:3000"
         networks:
@@ -58,6 +59,16 @@ services:
             - rb-front
         # command: certonly --webroot --webroot-path=/var/www/html --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --staging       -d preprod.resorption-bidonvilles.beta.gouv.fr  -d api.preprod.resorption-bidonvilles.beta.gouv.fr
         # command: certonly --webroot --webroot-path=/var/www/html --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --force-renewal -d preprod.resorption-bidonvilles.beta.gouv.fr -d api.preprod.resorption-bidonvilles.beta.gouv.fr
+
+    rb-mongo:
+        image: mongo:latest
+        container_name: rb_mongo
+        restart: always
+        volumes:
+            - ./mongo-data:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: fabnum
+            MONGO_INITDB_ROOT_PASSWORD: fabnum
 
 volumes:
     rb-pg-data:
