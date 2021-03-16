@@ -1,7 +1,0 @@
-.git
-config/.env.staging
-config/.env.development
-config/env.production
-dhparam
-nginx-sites-enabled.certbot/
-nginx-sites-enabled.origin/
