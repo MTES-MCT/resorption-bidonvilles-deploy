@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  rb_database_agenda:
+    expose:
+      - '27017-27019'
+
+  rb_frontend:
+    build:
+      target: production
+
+  rb_api:
+    build:
+      target: production
+
+  rb_certbot:
+    image: certbot/certbot
+    volumes:
+        - ./data/certbot/conf:/etc/letsencrypt
+        - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh"
+    command: "-c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

@@ -1,0 +1,60 @@
+version: '3.7'
+
+services:
+  rb_proxy:
+    image: nginx:1.19-alpine
+    container_name: rb_proxy
+    env_file:
+      - ./config/.env
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${RB_PROXY_CONFIG_FOLDER}:/etc/nginx/templates
+    depends_on:
+      - rb_frontend
+      - rb_api
+
+  rb_database_data:
+    image: postgres:${RB_DATABASE_POSTGRES_VERSION}-alpine
+    container_name: rb_database_data
+    volumes:
+      - ${RB_DATABASE_DATA_FOLDER}:/var/lib/postgresql/data
+    env_file:
+      - ./config/.env
+    ports:
+      - ${RB_DATABASE_EXTERNAL_PORT}:8080
+    healthcheck:
+      test: pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}
+      interval: 10s
+      timeout: 10s
+      retries: 6
+
+  rb_database_agenda:
+    image: mongo:${RB_AGENDA_MONGO_VERSION}
+    container_name: rb_database_agenda
+    volumes:
+      - ${RB_AGENDA_DATA_FOLDER}:/data/db
+    env_file:
+      - ./config/.env
+
+  rb_frontend:
+    build:
+      context: ${RB_FRONTEND_FOLDER}
+    container_name: rb_frontend
+    expose:
+      - 80
+    env_file:
+      - ./config/.env
+
+  rb_api:
+    build:
+      context: ${RB_API_FOLDER}
+    container_name: rb_api
+    expose:
+      - 80
+    env_file:
+      - ./config/.env
+    depends_on:
+      - rb_database_data
+      - rb_database_agenda
