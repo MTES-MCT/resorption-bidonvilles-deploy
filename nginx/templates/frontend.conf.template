@@ -7,7 +7,6 @@ server {
     }
 
     location / {
-        # proxy_pass http://rb_frontend:80;
         return 301 https://$host$request_uri;
     }
 }
