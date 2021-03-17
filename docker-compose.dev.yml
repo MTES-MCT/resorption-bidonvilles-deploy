@@ -1,12 +1,17 @@
 version: '3.7'
 
 services:
+  rb_proxy:
+    volumes:
+      - ${RB_DATA_FOLDER}/ssl:/etc/ssl
+
   rb_database_agenda:
     ports:
       - '27017-27019:27017-27019'
 
   rb_frontend:
     build:
+      context: ${RB_FRONTEND_FOLDER}
       target: development
     command: yarn dev
     volumes:
@@ -15,6 +20,7 @@ services:
 
   rb_api:
     build:
+      context: ${RB_API_FOLDER}
       target: development
     command: yarn dev
     volumes:

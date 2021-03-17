@@ -1,7 +1,8 @@
 ## Pré-requis
-- git
+- make
 - docker
 - docker-compose
+- openssl
 
 ## Initialisation
 Avant de pouvoir utiliser ce dépôt, vous devez préalablement :

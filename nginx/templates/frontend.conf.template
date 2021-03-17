@@ -1,0 +1,29 @@
+server {
+    listen 80;
+    server_name ${RB_PROXY_FRONTEND_HOST};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        # proxy_pass http://rb_frontend:80;
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name ${RB_PROXY_FRONTEND_HOST};
+
+    ssl_certificate ${RB_PROXY_CERTIFICATE_PATH};
+    ssl_certificate_key ${RB_PROXY_CERTIFICATE_KEY_PATH};
+    ssl_trusted_certificate ${RB_PROXY_TRUSTED_CERTIFICATE_PATH};
+
+    include /etc/nginx/common/ssl[.]conf;
+
+    location / {
+        proxy_pass http://rb_frontend:80;
+    }
+}

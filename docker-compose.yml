@@ -10,7 +10,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ${RB_PROXY_CONFIG_FOLDER}:/etc/nginx/templates
+      - ${RB_PROXY_CONFIG_FOLDER}/templates:/etc/nginx/templates
     depends_on:
       - rb_frontend
       - rb_api
@@ -39,8 +39,6 @@ services:
       - ./config/.env
 
   rb_frontend:
-    build:
-      context: ${RB_FRONTEND_FOLDER}
     container_name: rb_frontend
     expose:
       - 80
@@ -48,8 +46,6 @@ services:
       - ./config/.env
 
   rb_api:
-    build:
-      context: ${RB_API_FOLDER}
     container_name: rb_api
     expose:
       - 80
