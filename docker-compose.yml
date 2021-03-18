@@ -10,6 +10,7 @@ services:
       - 80:80
       - 443:443
     volumes:
+      - ${RB_PROXY_CONFIG_FOLDER}/http.conf:/etc/nginx/conf.d/http.conf
       - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/etc/nginx/templates
     depends_on:
       - rb_frontend
