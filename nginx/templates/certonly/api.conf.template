@@ -1,0 +1,8 @@
+server {
+    listen 80;
+    server_name ${RB_PROXY_API_HOST};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+}
