@@ -1,10 +1,6 @@
 version: '3.7'
 
 services:
-  rb_proxy:
-    volumes:
-      - ${RB_DATA_FOLDER}/ssl:/etc/ssl
-
   rb_database_agenda:
     ports:
       - '27017-27019:27017-27019'

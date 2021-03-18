@@ -6,7 +6,6 @@ services:
       - ${RB_PROXY_CONFIG_FOLDER}/common:/etc/nginx/common
       - ${RB_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
       - ${RB_DATA_FOLDER}/certbot/www:/var/www/certbot
-      - ${RB_DATA_FOLDER}/certbot/ssl:/etc/ssl
 
   rb_database_agenda:
     expose:
