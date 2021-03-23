@@ -18,7 +18,8 @@ services:
       - rb_api
 
   rb_database_data:
-    image: postgres:${RB_DATABASE_POSTGRES_VERSION}-alpine
+    build:
+      context: ./database
     container_name: rb_database_data
     volumes:
       - ${RB_DATABASE_DATA_FOLDER}:/var/lib/postgresql/data
