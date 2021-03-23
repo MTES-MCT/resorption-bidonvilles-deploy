@@ -17,7 +17,7 @@ Les étapes suivantes sont **obligatoires** :
   - ce dépôt dans un dossier `resorption-bidonvilles-deploy` 
   - [le dépôt du frontend](https://github.com/MTES-MCT/action-bidonvilles) dans un dossier `resorption-bidonvilles-frontend`
   - [le dépôt de l'API](https://github.com/MTES-MCT/action-bidonvilles-api) dans un dossier `resorption-bidonvilles-api`
-- créer et remplir un fichier `config/.env` en copiant le fichier `config/.env.dev.sample` (voir ici pour une explication complète sur ce fichier)
+- créer et remplir un fichier `config/.env` en copiant le fichier `config/.env.dev.sample` ([voir ici pour une explication complète sur ce fichier](#configuration))
 - déclarer dans votre fichier `/etc/hosts` les deux domaines locaux suivants :
 ```
 127.0.0.1   resorption-bidonvilles.localhost
@@ -51,7 +51,7 @@ Note : pour passer des options à ces commandes, entourez les de guillemets : `m
 - lancer des seeders via le service `rb_api` : `make prod exec rb_api yarn sequelize db:seed --seed db/seeders/...`
 - accéder à la base de données : `make prod exec rb_database_data bash`
 
-## 📒 Configuration
+<h2 id="configuration">📒 Configuration</h2>
 Note : tous les chemins indiqués comme "relatifs" dans cette section sont relatifs à la racine de ce dépôt.
 
 ### Commune
