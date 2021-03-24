@@ -151,7 +151,7 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
     <tbody>
         <tr>
             <td>RB_FRONTEND_VERSION</td>
-            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/repository/docker/resorptionbidonvilles/frontend">Docker Hub</a>)</td>
+            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/r/resorptionbidonvilles/frontend/tags">Docker Hub</a>)</td>
         </tr>
         <tr>
             <td>RB_FRONTEND_FOLDER</td>
@@ -173,7 +173,7 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
     <tbody>
         <tr>
             <td>RB_API_VERSION</td>
-            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/repository/docker/resorptionbidonvilles/api">Docker Hub</a>)</td>
+            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/r/resorptionbidonvilles/api/tags">Docker Hub</a>)</td>
         </tr>
         <tr>
             <td>RB_API_FOLDER</td>
