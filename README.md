@@ -165,6 +165,10 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
             <td>VUE_APP_MATOMO_ON</td>
             <td>Soit `true`, soit `false. Est-ce que le tracking Matomo doit être activé ou non.</td>
         </tr>
+        <tr>
+            <td>VUE_APP_SENTRY_SOURCEMAP_AUTHKEY</td>
+            <td>Authkey pour communication avec le projet Sentry</td>
+        </tr>
     </tbody>
 </table>
 
