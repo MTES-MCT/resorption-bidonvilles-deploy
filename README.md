@@ -219,6 +219,10 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
             <td>RB_API_MONGO_PASSWORD</td>
             <td>Mot de passe de l'utilisateur Mongo pour la base de données Agenda</td>
         </tr>
+        <tr>
+            <td>RB_API_SENTRY_DSN</td>
+            <td>DSN du projet Sentry</td>
+        </tr>
     </tbody>
 </table>
 
