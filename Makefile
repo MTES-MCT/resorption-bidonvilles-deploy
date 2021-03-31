@@ -10,10 +10,10 @@ prod:
 localcert:
 	envsubst < config/domains.ext.sample > config/domains.ext
 	mkdir -p data/ssl
-	openssl req -x509 -nodes -new -sha256 -days 3500 -newkey rsa:2048 -keyout data/ssl/RootCA.key -out data/ssl/RootCA.pem -subj "/CN=RootCA"
+	openssl req -x509 -nodes -new -sha256 -days 360 -newkey rsa:2048 -keyout data/ssl/RootCA.key -out data/ssl/RootCA.pem -subj "/CN=RootCA"
 	openssl x509 -outform pem -in data/ssl/RootCA.pem -out data/ssl/RootCA.crt
 	openssl req -new -nodes -newkey rsa:2048 -keyout data/ssl/localhost.key -out data/ssl/localhost.csr -subj "/CN=localhost"
-	openssl x509 -req -sha256 -days 3500 -in data/ssl/localhost.csr -CA data/ssl/RootCA.pem -CAkey data/ssl/RootCA.key -CAcreateserial -extfile config/domains.ext -out data/ssl/localhost.crt
+	openssl x509 -req -sha256 -days 360 -in data/ssl/localhost.csr -CA data/ssl/RootCA.pem -CAkey data/ssl/RootCA.key -CAcreateserial -extfile config/domains.ext -out data/ssl/localhost.crt
 
 remotecert:
 	mkdir -p data/ssl && openssl dhparam -out data/ssl/dhparam.pem 2048
