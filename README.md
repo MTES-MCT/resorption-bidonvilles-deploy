@@ -31,8 +31,8 @@ Les étapes suivantes sont optionnelles et peuvent être faites plus tard :
 ### 2. Utiliser
 Le fichier Makefile fournit une target `dev` qui peut être utilisée comme un alias de docker-compose :
 - démarrer l'instance locale : `make dev up`
-- exécuter une commande dans le service api : `make dev rb_api exec yarn sequelize db:migrate`
-- démarrer une session SHELL sur le service api : `make dev rb_api exec bash`
+- exécuter une commande dans le service api : `make dev exec rb_api yarn sequelize db:migrate`
+- démarrer une session SHELL sur le service api : `make dev exec rb_api bash`
 - forcer un build des images : `make dev build`
 - etc.
 
