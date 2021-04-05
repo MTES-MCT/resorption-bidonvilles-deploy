@@ -9,6 +9,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - rb_network
     volumes:
       - ${RB_PROXY_CONFIG_FOLDER}/http.conf:/etc/nginx/conf.d/http.conf
       - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/etc/nginx/templates
@@ -27,6 +29,8 @@ services:
       - ./config/.env
     ports:
       - ${RB_DATABASE_EXTERNAL_PORT}:5432
+    networks:
+      - rb_network
     healthcheck:
       test: pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}
       interval: 10s
@@ -38,11 +42,15 @@ services:
     container_name: rb_database_agenda
     volumes:
       - ${RB_AGENDA_DATA_FOLDER}:/data/db
+    networks:
+      - rb_network
     env_file:
       - ./config/.env
 
   rb_frontend:
     container_name: rb_frontend
+    networks:
+      - rb_network
     expose:
       - 80
     env_file:
@@ -50,6 +58,8 @@ services:
 
   rb_api:
     container_name: rb_api
+    networks:
+      - rb_network
     expose:
       - 80
     env_file:
@@ -57,3 +67,10 @@ services:
     depends_on:
       - rb_database_data
       - rb_database_agenda
+
+networks:
+  rb_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

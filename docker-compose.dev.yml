@@ -31,6 +31,8 @@ services:
       - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@rb_database_agenda
     ports:
       - '3000:3000'
+    networks:
+      - rb_network
     depends_on:
       - rb_database_agenda
 
