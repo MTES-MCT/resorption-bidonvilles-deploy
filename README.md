@@ -9,6 +9,7 @@
 - docker-compose
 - openssl
 - envsubst
+- curl
 
 ## 👩🏼‍💻 Instance de développement
 ### 1. Initialiser
