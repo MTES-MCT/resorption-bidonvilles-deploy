@@ -53,7 +53,9 @@ Note : pour passer des options à ces commandes, entourez les de guillemets : `m
 - accéder à la base de données : `make prod exec rb_database_data bash`
 
 <h2 id="configuration">📒 Configuration</h2>
-Note : tous les chemins indiqués comme "relatifs" dans cette section sont relatifs à la racine de ce dépôt.
+Plusieurs remarques :
+- tous les chemins indiqués comme "relatifs" dans cette section sont relatifs à la racine de ce dépôt.
+- les variables indiquées `prod-only` ne sont nécessaires que pour la production (pas la dev, ni staging)
 
 ### Commune
 <table>
@@ -109,6 +111,29 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
         <tr>
             <td>RB_DATABASE_EXTERNAL_PORT</td>
             <td>Port de l'hôte qui doit être bindé à celui de la base de données.</td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_LOCALBACKUP_FOLDER</td>
+            <td>Chemin absolu du dossier du conteneur dans lequel seront générés les fichiers de backup</td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_REMOTEBACKUP_KEY_ID<br/><em>prod-only</em></td>
+            <td rowspan="6" align="center">Voir la page du wiki <a href="https://github.com/MTES-MCT/resorption-bidonvilles-deploy/wiki/Backup-%7C-Mise-en-place-de-la-backup-cloud#-configuration-de-rclone">Mise en place de la backup cloud</a></td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_REMOTEBACKUP_KEY_SECRET<br/><em>prod-only</em></td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_REMOTEBACKUP_BUCKET_ENDPOINT<br/><em>prod-only</em></td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_REMOTEBACKUP_BUCKET_NAME<br/><em>prod-only</em></td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_REMOTEBACKUP_BUCKET_PASSWORD<br/><em>prod-only</em></td>
+        </tr>
+        <tr>
+            <td>RB_DATABASE_REMOTEBACKUP_SLACK_WEBHOOK<br/><em>prod-only</em></td>
         </tr>
         <tr>
             <td>POSTGRES_DB</td>
@@ -167,8 +192,12 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
             <td>Soit `true`, soit `false. Est-ce que le tracking Matomo doit être activé ou non.</td>
         </tr>
         <tr>
-            <td>VUE_APP_SENTRY_SOURCEMAP_AUTHKEY</td>
+            <td>VUE_APP_SENTRY_SOURCEMAP_AUTHKEY<br/><em>prod-only</em></td>
             <td>Authkey pour communication avec le projet Sentry</td>
+        </tr>
+        <tr>
+            <td>VUE_APP_SENTRY<br/><em>prod-only</em></td>
+            <td>DSN du projet Sentry frontend</td>
         </tr>
     </tbody>
 </table>
@@ -225,8 +254,12 @@ Note : tous les chemins indiqués comme "relatifs" dans cette section sont relat
             <td>Mot de passe de l'utilisateur Mongo pour la base de données Agenda</td>
         </tr>
         <tr>
-            <td>RB_API_SENTRY_DSN</td>
-            <td>DSN du projet Sentry</td>
+            <td>RB_API_SLACK_WEBHOOK_1<br/>RB_API_SLACK_WEBHOOK_2<br/>...<br/><em>prod-only</em></td>
+            <td>Définition de webhooks Slack sous la forme "nom;url" où "nom" est le nom de la clé qui sera définie dans l'objet "slack" de la configuration api, et "url" est l'URL du webhook en question.<br/><br/>Il peut y avoir une infinité de variables "RB_API_SLACK_WEBHOOK_X" tant que la numérotation commence bien par 1 et qu'elle est incrémentée de 1 à chaqure fois.</td>
+        </tr>
+        <tr>
+            <td>RB_API_SENTRY_DSN<br/><em>prod-only</em></td>
+            <td>DSN du projet Sentry API</td>
         </tr>
     </tbody>
 </table>
