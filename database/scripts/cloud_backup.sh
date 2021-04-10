@@ -1,6 +1,8 @@
 #!/bin/bash
 
-export $(grep -v '^#' config/.env)
+set -a
+source config/.env
+set +a
 
 # fonction qui attend en paramètre le message à publier dans slack
 send_slack_notification() {
