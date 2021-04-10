@@ -34,7 +34,7 @@ envsubst "$(printf '${%s} ' $(env | sed 's/=.*//'))" < "config/rclone.conf.templ
 BACKUP_FILE_NAME=$(basename -- ${BACKUP_FILE_PATH/$'\r'})
 RCLONE_CONFIG_PATH="$(cd config;pwd)/rclone.conf"
 
-docker run --rm -it -v resorption-bidonvilles-deploy_rb_database_backups:/data -v ${RCLONE_CONFIG_PATH}:/config/rclone/rclone.conf --user $(id -u):$(id -g) rclone/rclone copy --progress --error-on-no-transfer /data/$BACKUP_FILE_NAME secret:/
+docker run --rm -it -v rb_database_backups:/data -v ${RCLONE_CONFIG_PATH}:/config/rclone/rclone.conf --user $(id -u):$(id -g) rclone/rclone copy --progress --error-on-no-transfer /data/$BACKUP_FILE_NAME secret:/
 RCLONE_RESULT=$?
 
 # Traitement du résulat de l'opération
