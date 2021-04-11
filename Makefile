@@ -23,7 +23,7 @@ remotecert:
 		&& docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml down
 
 local_backup:
-	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml exec rb_database_data local_backup
+	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml exec -T rb_database_data local_backup
 
 cloud_backup:
 	./database/scripts/cloud_backup.sh
