@@ -192,6 +192,10 @@ Plusieurs remarques :
             <td>Soit `true`, soit `false. Est-ce que le tracking Matomo doit être activé ou non.</td>
         </tr>
         <tr>
+            <td>VUE_APP_SENTRY_ON</td>
+            <td>Soit `true`, soit `false. Est-ce que le tracking Sentry doit être activé ou non.</td>
+        </tr>
+        <tr>
             <td>VUE_APP_SENTRY_SOURCEMAP_AUTHKEY<br/><em>prod-only</em></td>
             <td>Authkey pour communication avec le projet Sentry</td>
         </tr>
