@@ -242,6 +242,10 @@ Plusieurs remarques :
             <td>Nombre d'heures de validité d'un token de réinitialisation de mot de passe. Exemple : `24h`</td>
         </tr>
         <tr>
+            <td>RB_API_TEST_EMAIL</td>
+            <td>Adresse email qui est utilisée pour remplacer certains destinataires d'emails transactionnels. À utiliser en préproduction pour tester les notifications mails à l'ajout de commentaire par exemple.</td>
+        </tr>
+        <tr>
             <td>RB_API_MAILJET_PUBLIC_KEY</td>
             <td>Clé publique de l'API Mailjet</td>
         </tr>
