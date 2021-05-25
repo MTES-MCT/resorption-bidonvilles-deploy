@@ -43,10 +43,11 @@ services:
     image: mongo:${RB_AGENDA_MONGO_VERSION}
     container_name: rb_database_agenda
     healthcheck:
-      test: mongo --username ${MONGO_INITDB_ROOT_USERNAME} --password ${MONGO_INITDB_ROOT_PASSWORD}
-      interval: 10s
-      timeout: 10s
-      retries: 6
+        test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGO_INITDB_ROOT_USERNAME -p $MONGO_INITDB_ROOT_PASSWORD --quiet | grep 1
+        interval: 10s
+        timeout: 10s
+        retries: 3
+        start_period: 20s
     volumes:
       - ${RB_AGENDA_DATA_FOLDER}:/data/db
     networks:
