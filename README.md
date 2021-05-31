@@ -61,6 +61,14 @@ Plusieurs remarques :
 <table>
     <tbody>
         <tr>
+            <td>RB_FOLDER<br/><em>dev-only</em></td>
+            <td>Chemin relatif ou absolu vers la racine du dépôt `action-bidonvilles`</td>
+        </tr>
+        <tr>
+            <td>RB_VERSION<br/><em>prod-only</em></td>
+            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir les repositories sur <a href="https://hub.docker.com/r/resorptionbidonvilles">Docker Hub</a>). Par défaut, le même numéro de version est utilisé pour frontend et api, mais vous pouvez forcer des versions différentes en modifiant directement RB_API_VERSION et RB_FRONTEND_VERSION (voir plus bas).</td>
+        </tr>
+        <tr>
             <td>RB_DATA_FOLDER</td>
             <td>Chemin relatif ou absolu vers le dossier `data` qui doit être créé pour stocker par défaut les données locales (certificats https, base de données ,etc.)</td>
         </tr>
@@ -181,7 +189,7 @@ Plusieurs remarques :
         </tr>
         <tr>
             <td>RB_FRONTEND_FOLDER</td>
-            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du dépôt `action-bidonvilles`.</td>
+            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package frontend du dépôt `action-bidonvilles`.</td>
         </tr>
         <tr>
             <td>VUE_APP_API_URL</td>
@@ -215,7 +223,7 @@ Plusieurs remarques :
         </tr>
         <tr>
             <td>RB_API_FOLDER</td>
-            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du dépôt `action-bidonvilles-api`.</td>
+            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package api du dépôt `action-bidonvilles`.</td>
         </tr>
         <tr>
             <td>RB_API_BACK_URL</td>
