@@ -3,3 +3,4 @@ domains.ext
 .env
 .DS_Store
 rclone.conf
+.vscode
