@@ -1,7 +1,32 @@
-<p align="center"><img src="https://resorption-bidonvilles.beta.gouv.fr/img/Marianne.d37c6b1e.svg" height="30" align="center" /> <strong>Résorption-bidonvilles</strong></p>
-<h1 align="center">Infrastructure de <em>Résorption-bidonvilles</em></h1>
+<p align="center">
+  <span href="https://resorption-bidonvilles.beta.gouv.fr">
+    <img src="https://resorption-bidonvilles.beta.gouv.fr/img/Marianne.d37c6b1e.svg" alt="Résorption-bidonvilles" align="down" height="30">
+    <strong><font size="6">Résorption-bidonvilles</font></strong><br/>
+    Agir pour résorber les bidonvilles
+  </span>
 
-`resorption-bidonvilles-deploy` fournit une configuration Docker et Docker-compose complète permettant de monter une instance locale de *Résorption-bidonvilles*.
+  <h3 align="center"></h3>
+
+  <p align="center">
+    [Structure de déploiement]
+    <br />
+    <a href="https://github.com/MTES-MCT/resorption-bidonvilles-deploy/wiki"><strong>Consulter le wiki »</strong></a>
+    <br />
+    <br />
+    <a href="https://resorption-bidonvilles.beta.gouv.fr">Voir la plateforme</a>
+    ·
+    <a href="#-pré-requis">Déployer une instance sur sa machine</a>
+    ·
+    <a href="#-instance-de-staging--production">Déployer une instance sur un serveur</a>
+  </p>
+</p>
+
+
+## 🤓 Préambule
+
+Résorption-bidonvilles est une plateforme publiée sous la forme d'images Docker dans [Docker Hub](https://hub.docker.com/u/resorptionbidonvilles). Il existe une image [pour l'api](https://hub.docker.com/r/resorptionbidonvilles/api), et une image [pour le frontend](https://hub.docker.com/r/resorptionbidonvilles/frontend).
+
+Ce dépôt fournit une configuration Docker et Docker-compose complète permettant de monter une instance de dev, staging, ou production de *Résorption-bidonvilles*.
 
 ## 🛠 Pré-requis
 - make
@@ -16,9 +41,8 @@
 Les étapes suivantes sont **obligatoires** :
 - sur votre machine, cloner les projets suivants dans des dossiers au même niveau :
   - ce dépôt dans un dossier `resorption-bidonvilles-deploy` 
-  - [le dépôt du frontend](https://github.com/MTES-MCT/action-bidonvilles) dans un dossier `resorption-bidonvilles-frontend`
-  - [le dépôt de l'API](https://github.com/MTES-MCT/action-bidonvilles-api) dans un dossier `resorption-bidonvilles-api`
-- créer et remplir un fichier `config/.env` en copiant le fichier `config/.env.dev.sample` ([voir ici pour une explication complète sur ce fichier](#configuration))
+  - [les sources de la plateforme](https://github.com/MTES-MCT/resorption-bidonvilles) dans un dossier `resorption-bidonvilles`
+- créer et remplir un fichier `config/.env` en copiant le fichier `config/.env.dev.sample` ([voir ici pour une explication complète sur ce fichier](#-configuration))
 - déclarer dans votre fichier `/etc/hosts` les deux domaines locaux suivants :
 ```
 127.0.0.1   resorption-bidonvilles.localhost
@@ -31,28 +55,43 @@ Les étapes suivantes sont optionnelles et peuvent être faites plus tard :
 
 ### 2. Utiliser
 Le fichier Makefile fournit une target `dev` qui peut être utilisée comme un alias de docker-compose :
-- démarrer l'instance locale : `make dev up`
+- démarrer l'instance locale : `make dev up` ([voir ici la liste des services montés](#-liste-des-services-montés))
 - exécuter une commande dans le service api : `make dev exec rb_api yarn sequelize db:migrate`
 - démarrer une session SHELL sur le service api : `make dev exec rb_api bash`
 - forcer un build des images : `make dev build`
 - etc.
 
-Note : pour passer des options à ces commandes, entourez les de guillemets : `make dev "up --remove-orphans --build"`
+Note : pour passer des options à ces commandes, entourez les de guillemets : `make dev "up --remove-orphans --build"`, autrement, Make retournera une erreur
 
-## 🚀 Instance de staging / production
+<h2 id="deployer">🚀 Instance de staging / production</h2>
+
 ### 1. Initialiser
 - cloner ce dépôt à l'endroit souhaité (sur une machine Debian, la localisation attendue est le dossier `/srv` : `/srv/resorption-bidonvilles` par exemple)
 - créer le fichier `config/.env` en copiant l'un des fichiers d'exemple `config/.env.*.sample`
 - faire l'acquisition des certificats https : `make remotecert`
-- monter l'instance en passant en paramètre les versions attendues du front et de l'api : `RB_FRONTEND_VERSION=0.13.1 RB_API_VERSION=0.0.14 make prod "up -d"`
+- monter l'instance : `make prod "up -d"`
 
 ### 2. Maintenir
-- relancer un up avec les bons numéros de version `RB_FRONTEND_VERSION=0.14.0 RB_API_VERSION=0.1.0 make prod "up -d"`
+- modifier la version attendue de la plateforme dans `config/.env`
+- relancer un up : `make prod "up -d"`
 - lancer les migrations via le service `rb_api` : `make prod exec rb_api yarn sequelize db:migrate`
 - lancer des seeders via le service `rb_api` : `make prod exec rb_api yarn sequelize db:seed --seed db/seeders/...`
 - accéder à la base de données : `make prod exec rb_database_data bash`
 
-<h2 id="configuration">📒 Configuration</h2>
+## 🧩 Liste des services montés
+
+Quel que soit l'environnement choisi, les services suivants seront montés :
+- `rb_frontend` : le frontend de la plateforme, une SPA développée avec VueJS
+- `rb_api` : l'API REST qui alimente la plateforme, développée avec NodeJS
+- `rb_proxy` : le serveur Nginx qui écoute l'intégralité des requêtes HTTP(S) et redirige vers le service approprié sur la base du nom de domaine
+- `rb_database_data` : la base de données PostgreSQL utilisée par l'API
+- `rb_database_agenda` : la base de données MongoDB qui sert à planifier des tâches futures via l'outil `agenda`
+
+Selon l'environnement choisi, les services suivants pourront être montés également :
+- `rb_agendash` : un dashboard accessible via son navigateur pour monitorer `agenda`
+- `rb_certbot` : un outil permettant le renouvellement automatique des certificats HTTPS
+
+## 📒 Configuration
 Plusieurs remarques :
 - tous les chemins indiqués comme "relatifs" dans cette section sont relatifs à la racine de ce dépôt.
 - les variables indiquées `prod-only` ne sont nécessaires que pour la production (pas la dev, ni staging)
