@@ -8,11 +8,22 @@ TARGET_BRANCH=$1
 TARGET_DOCKER_IMAGE=$2
 TARGET_SAFENAME=$(echo $TARGET_BRANCH | sed -e "s/\//-/g")
 
-function clear() {
+function clearArchive() {
     echo "🟦 [Clearing /tmp files]"
     rm -rf "/tmp/action-bidonvilles-$TARGET_SAFENAME"
     rm -f "/tmp/action-bidonvilles-$TARGET_SAFENAME.zip"
     echo "🔹 Done"
+}
+
+function clearBackup() {
+    echo "🟦 [Clearing data/rb_database_tmp/* files]"
+    rm -f data/rb_database_tmp/*
+    echo "🔹 Done"
+}
+
+function clearAll() {
+    clearArchive
+    clearBackup
 }
 
 function updateRbVersion() {
@@ -62,8 +73,6 @@ function restoreDatabase() {
     fi
 
     echo "🔹 Restoring the backup..."
-    rm -f data/rb_database_tmp/$BACKUP_RAWFILE_NAME
-    mv /tmp/backup_$SOURCE_VERSION data/rb_database_tmp/$BACKUP_RAWFILE_NAME
     docker exec -t rb_database_data sh -c "psql -h localhost -U $POSTGRES_USER -d $POSTGRES_DB < /tmp/$BACKUP_RAWFILE_NAME"
 
     return $?
@@ -79,11 +88,15 @@ function rollback() {
     restoreDatabase
     if [[ $? -ne 0 ]];
     then
-        echo "🟥 Failed restoring the database : please restore manually the backup file /tmp/$BACKUP_RAWFILE_NAME"
+        echo "🟥 Failed restoring the database : please restore manually the backup file data/rb_database_tmp/$BACKUP_RAWFILE_NAME"
+    else
+        clearBackup
     fi
+
+    clearArchive
 }
 
-clear
+clearArchive
 
 ### Download target version
 echo "🟦 [Downloading the zipfile of the target branch]"
@@ -100,6 +113,7 @@ echo "🟦 [Downloading the zipfile of the target branch]"
     unzip /tmp/action-bidonvilles-$TARGET_SAFENAME.zip -d /tmp
 } || {
     echo "🔸 Failed to unzip the target version"
+    rm -f /tmp/action-bidonvilles-$TARGET_SAFENAME.zip
     exit 1
 }
 
@@ -114,6 +128,7 @@ echo $SOURCE_MIGRATIONS | grep -qE "[0-9]{6}-.+\.js"
 if [ $? -ne 0 ];
 then
     echo "🔸 Failed to list current migrations"
+    clearArchive
     exit 1
 fi
 
@@ -127,6 +142,7 @@ SOURCE_VERSION=$(cat config/.env | grep 'RB_VERSION=' | grep -oE "[^=]+$")
 if [[ -z $SOURCE_VERSION ]];
 then
     echo "🔸 Failed to find the current version"
+    clearArchive
     exit 1
 fi
 
@@ -141,6 +157,7 @@ BACKUP_RESPONSE=$(docker exec -t rb_database_data local_backup)
 if [[ -z ${BACKUP_RESPONSE//[$'\t\r\n ']} ]];
 then
     echo "🔸 Failed generating a backup"
+    clearArchive
     exit 1
 fi
 
@@ -148,19 +165,20 @@ fi
     echo "🔹 Parsing the name of the backup file..."
     BACKUP_FILE_PATH=$(docker exec -t rb_database_data sh -c "find $RB_DATABASE_LOCALBACKUP_FOLDER -print0 | xargs -r -0 ls -1 -t 2>/dev/null | head -1")
     BACKUP_FILE_PATH=${BACKUP_FILE_PATH//[$'\t\r\n ']}
-    BACKUP_ZIPFILE_NAME=$(basename -- $BACKUP_FILE_PATH)
-    BACKUP_RAWFILE_NAME=${BACKUP_ZIPFILE_NAME//[$'.gz']}
+    BACKUP_ZIPFILE_NAME="backup_$SOURCE_VERSION.gz"
+    BACKUP_RAWFILE_NAME="backup_$SOURCE_VERSION"
 } || {
     echo "🔸 Failed parsing the backup"
+    clearArchive
     exit 1
 }
 
 echo "🔹 Moving the backup to a directory mounted on the host..."
-BACKUP_RESPONSE=$(docker exec -t rb_database_data sh -c "rm -f /tmp/$BACKUP_ZIPFILE_NAME && cp $BACKUP_FILE_PATH /tmp")
+BACKUP_RESPONSE=$(docker exec -t rb_database_data sh -c "rm -f /tmp/$BACKUP_ZIPFILE_NAME && mv $BACKUP_FILE_PATH /tmp/$BACKUP_ZIPFILE_NAME")
 if [[ ! -z $BACKUP_RESPONSE ]];
 then
-    echo $BACKUP_RESPONSE
     echo "🔸 Failed moving the backup to mounted directory"
+    clearArchive
     exit 1
 fi
 
@@ -168,17 +186,9 @@ echo "🔹 Unzipping the backup file..."
 docker exec -t rb_database_data sh -c "rm -f /tmp/$BACKUP_RAWFILE_NAME && gunzip /tmp/$BACKUP_ZIPFILE_NAME"
 if [[ $? -ne 0 ]]; then
     echo "🔸 Failed unzipping the backup"
+    clearAll
     exit 1
 fi
-
-{
-    echo "🔹 Moving the backup file to host's /tmp directory..."
-    rm -f /tmp/backup_$SOURCE_VERSION
-    mv data/rb_database_tmp/$BACKUP_RAWFILE_NAME /tmp/backup_$SOURCE_VERSION
-} || {
-    echo "🔸 Failed moving the backup to /tmp"
-    exit 1
-}
 
 echo "🔹 Done"
 
@@ -190,6 +200,7 @@ updateRbVersion $SOURCE_VERSION $TARGET_DOCKER_IMAGE
 if [[ $? -ne 0 ]];
 then
     echo "🔸 Failed updating RB_VERSION"
+    clearAll
     exit 1
 fi
 
@@ -208,6 +219,7 @@ then
         echo "🟥 Failed restoring RB_VERSION: please edit config/.env manually and set RB_VERSION to $SOURCE_VERSION"
     fi
 
+    clearAll
     exit 1
 fi
 
@@ -281,4 +293,4 @@ if [[ ! -z $MAKE_RESPONSE ]]; then
     exit 1
 fi
 
-clear
+clearAll
