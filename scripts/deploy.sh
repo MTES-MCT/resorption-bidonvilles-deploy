@@ -59,14 +59,14 @@ function restoreDatabase() {
     echo "🔹 [Restoring database]"
 
     echo "🔹 Dropping database..."
-    MAKE_RESPONSE=$(make prod exec rb_api "yarn sequelize db:drop" | grep 'dropped')
+    MAKE_RESPONSE=$(make exec rb_api "yarn sequelize db:drop" | grep 'dropped')
     if [[ -z $MAKE_RESPONSE ]]; then
         echo "🔸 Failed dropping the database"
         return 1
     fi
 
     echo "🔹 Creating an empty database..."
-    MAKE_RESPONSE=$(make prod exec rb_api "yarn sequelize db:create" | grep 'created')
+    MAKE_RESPONSE=$(make exec rb_api "yarn sequelize db:create" | grep 'created')
     if [[ -z $MAKE_RESPONSE ]]; then
         echo "🔸 Failed recreating the database"
         return 1
@@ -123,7 +123,8 @@ echo "🔹 Done"
 ### Fetch list of migrations
 echo "🟦 [Fetching the list of source migrations]"
 echo "🔹 Getting a migrate:status..."
-SOURCE_MIGRATIONS=$(make prod exec rb_api "yarn sequelize db:migrate:status" | grep 'up' | grep -oE "[0-9]{6}-.+\.js")
+
+SOURCE_MIGRATIONS=$(make exec rb_api "yarn sequelize db:migrate:status" | grep 'up' | grep -oE "[0-9]{6}-.+\.js")
 
 echo $SOURCE_MIGRATIONS | grep -qE "[0-9]{6}-.+\.js"
 if [ $? -ne 0 ];
@@ -233,7 +234,7 @@ for name in $SOURCE_MIGRATIONS; do
     if [ ! -e /tmp/action-bidonvilles-$TARGET_SAFENAME/packages/api/db/migrations/$name ];
     then
         echo "🔹 Undoing $name..."
-        MAKE_RESPONSE=$(make prod exec rb_api "yarn sequelize db:migrate:undo --name $name" | grep 'reverted')
+        MAKE_RESPONSE=$(make exec rb_api "yarn sequelize db:migrate:undo --name $name" | grep 'reverted')
 
         if [[ -z $MAKE_RESPONSE ]];
         then
@@ -279,7 +280,7 @@ echo "🔹 Done"
 
 echo "🟦 [Running migrations]"
 echo "🔹 Running db:migrate..."
-MAKE_RESPONSE=$(make prod exec rb_api "yarn sequelize db:migrate" | grep 'ERROR')
+MAKE_RESPONSE=$(make exec rb_api "yarn sequelize db:migrate" | grep 'ERROR')
 
 if [[ ! -z $MAKE_RESPONSE ]]; then
     echo "🔸 Failed to run migrations"
