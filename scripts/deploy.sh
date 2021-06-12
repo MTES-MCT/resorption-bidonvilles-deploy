@@ -19,7 +19,7 @@ function updateRbVersion() {
     sed -i'.bak' "s/RB_VERSION=$1/RB_VERSION=$2/g" config/.env
     rm config/.env.bak
 
-    if [[ "$(cat config/.env | grep 'RB_VERSION' | grep -oE "[^=]+$")" != $2 ]];
+    if [[ "$(cat config/.env | grep 'RB_VERSION=' | grep -oE "[^=]+$")" != $2 ]];
     then
         return 1
     fi
@@ -122,9 +122,9 @@ echo "🔹 Done"
 ### Backup current version
 echo "🟦 [Backing up the value of the source RB_VERSION]"
 echo "🔹 Parsing config/.env..."
-SOURCE_VERSION=$(cat config/.env | grep 'RB_VERSION' | grep -oE "[^=]+$")
+SOURCE_VERSION=$(cat config/.env | grep 'RB_VERSION=' | grep -oE "[^=]+$")
 
-if [ -z $SOURCE_VERSION ];
+if [[ -z $SOURCE_VERSION ]];
 then
     echo "🔸 Failed to find the current version"
     exit 1
@@ -138,7 +138,7 @@ echo "🟦 [Backing up the database]"
 
 echo "🔹 Generating a local backup..."
 BACKUP_RESPONSE=$(docker exec -t rb_database_data local_backup)
-if [ -z ${BACKUP_RESPONSE//[$'\t\r\n ']} ];
+if [[ -z ${BACKUP_RESPONSE//[$'\t\r\n ']} ]];
 then
     echo "🔸 Failed generating a backup"
     exit 1
