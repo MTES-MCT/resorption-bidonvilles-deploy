@@ -35,6 +35,10 @@ Ce dépôt fournit une configuration Docker et Docker-compose complète permetta
 - openssl
 - envsubst
 - curl
+- unzip
+- grep
+- sed
+- timeout
 
 ## 👩🏼‍💻 Instance de développement
 ### 1. Initialiser
