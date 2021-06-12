@@ -96,6 +96,7 @@ function rollback() {
     clearArchive
 }
 
+# do NOT clear all here: we might need the backup file
 clearArchive
 
 ### Download target version
