@@ -17,7 +17,7 @@ function clearArchive() {
 
 function clearBackup() {
     echo "🟦 [Clearing data/rb_database_tmp/* files]"
-    rm -f data/rb_database_tmp/*
+    rm -f data/rb_database_tmp/backup_*
     echo "🔹 Done"
 }
 
