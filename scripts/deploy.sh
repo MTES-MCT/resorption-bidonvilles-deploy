@@ -126,7 +126,6 @@ echo "🔹 Getting a migrate:status..."
 
 SOURCE_MIGRATIONS=$(make exec rb_api "yarn sequelize db:migrate:status" | grep 'up' | grep -oE "[0-9]{6}-.+\.js")
 
-echo $SOURCE_MIGRATIONS | grep -qE "[0-9]{6}-.+\.js"
 if [ $? -ne 0 ];
 then
     echo "🔸 Failed to list current migrations"
