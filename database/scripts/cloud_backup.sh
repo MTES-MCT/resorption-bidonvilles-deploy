@@ -7,8 +7,7 @@ set +a
 # fonction qui attend en paramètre le message à publier sur Mattermost
 send_mattermost_notification() {
     echo -e $1
-    curl -X POST --data-urlencode 'payload={"channel": "notif-alertes-backup", "username": "Alerte Résorption Bidonvilles", "icon_emoji": ":robot:", "text": "$1"}' $RB_API_MATTERMOST_WEBHOOK
-
+    curl -X POST --data-urlencode "payload={\"channel\": \"notif-alertes-backup\", \"username\": \"Alerte Résorption Bidonvilles\", \"icon_emoji\": \":robot:\", \"text\": \"$1\"}" $RB_API_MATTERMOST_WEBHOOK
 }
 
 ############################################
