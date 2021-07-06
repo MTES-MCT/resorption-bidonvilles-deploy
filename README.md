@@ -101,7 +101,7 @@ Plusieurs remarques :
     <tbody>
         <tr>
             <td>RB_FOLDER<br/><em>dev-only</em></td>
-            <td>Chemin relatif ou absolu vers la racine du dépôt `action-bidonvilles`</td>
+            <td>Chemin relatif ou absolu vers la racine du dépôt `resorption-bidonvilles`</td>
         </tr>
         <tr>
             <td>RB_VERSION<br/><em>prod-only</em></td>
@@ -228,7 +228,7 @@ Plusieurs remarques :
         </tr>
         <tr>
             <td>RB_FRONTEND_FOLDER</td>
-            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package frontend du dépôt `action-bidonvilles`.</td>
+            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package frontend du dépôt `resorption-bidonvilles`.</td>
         </tr>
         <tr>
             <td>VUE_APP_API_URL</td>
@@ -262,7 +262,7 @@ Plusieurs remarques :
         </tr>
         <tr>
             <td>RB_API_FOLDER</td>
-            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package api du dépôt `action-bidonvilles`.</td>
+            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package api du dépôt `resorption-bidonvilles`.</td>
         </tr>
         <tr>
             <td>RB_API_BACK_URL</td>
