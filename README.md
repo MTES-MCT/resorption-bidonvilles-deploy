@@ -180,9 +180,6 @@ Plusieurs remarques :
             <td>RB_DATABASE_REMOTEBACKUP_BUCKET_PASSWORD<br/><em>prod-only</em></td>
         </tr>
         <tr>
-            <td>RB_DATABASE_REMOTEBACKUP_SLACK_WEBHOOK<br/><em>prod-only</em></td>
-        </tr>
-        <tr>
             <td>POSTGRES_DB</td>
             <td>Nom de la base de données</td>
         </tr>
@@ -309,8 +306,8 @@ Plusieurs remarques :
             <td>Mot de passe de l'utilisateur Mongo pour la base de données Agenda</td>
         </tr>
         <tr>
-            <td>RB_API_SLACK_WEBHOOK_1<br/>RB_API_SLACK_WEBHOOK_2<br/>...<br/><em>prod-only</em></td>
-            <td>Définition de webhooks Slack sous la forme "nom;url" où "nom" est le nom de la clé qui sera définie dans l'objet "slack" de la configuration api, et "url" est l'URL du webhook en question.<br/><br/>Il peut y avoir une infinité de variables "RB_API_SLACK_WEBHOOK_X" tant que la numérotation commence bien par 1 et qu'elle est incrémentée de 1 à chaqure fois.</td>
+            <td>RB_API_MATTERMOST_WEBHOOK<br/><em>prod-only</em></td>
+            <td>URL du webhook Mattermost pour les notifications</td>
         </tr>
         <tr>
             <td>RB_API_SENTRY_DSN<br/><em>prod-only</em></td>

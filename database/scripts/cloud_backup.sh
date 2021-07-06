@@ -4,10 +4,10 @@ set -a
 source config/.env
 set +a
 
-# fonction qui attend en paramètre le message à publier dans slack
-send_slack_notification() {
+# fonction qui attend en paramètre le message à publier sur Mattermost
+send_mattermost_notification() {
     echo -e $1
-    curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"$1\"}" $RB_DATABASE_REMOTEBACKUP_SLACK_WEBHOOK
+    curl -X POST --data-urlencode "payload={\"channel\": \"notif-alertes-backup\", \"username\": \"Alerte Résorption Bidonvilles\", \"icon_emoji\": \":robot:\", \"text\": \"$1\"}" $RB_API_MATTERMOST_WEBHOOK
 }
 
 ############################################
@@ -21,7 +21,7 @@ BACKUP_FILE_PATH=$(docker exec -t rb_database_data sh -c "find $RB_DATABASE_LOCA
 
 if [[ -z "$BACKUP_FILE_PATH" ]]
 then
-    send_slack_notification "Aucun fichier de backup trouvé pour la date du $DATE"
+    send_mattermost_notification "Aucun fichier de backup trouvé pour la date du $DATE"
     exit 1
 else
     echo "Le fichier suivant va être transféré : $BACKUP_FILE_PATH"
@@ -67,9 +67,9 @@ esac
 
 if [[ "$SUCCESS" -eq 1 ]]
 then
-    send_slack_notification "La copie du fichier de backup $BACKUP_FILE_NAME vers le bucket a réussi."
+    send_mattermost_notification "La copie du fichier de backup $BACKUP_FILE_NAME vers le bucket a réussi."
     exit 0
 else
-    send_slack_notification "La copie du fichier de backup $BACKUP_FILE_NAME vers le bucket a échoué !\nCode retour : ${RCLONE_RESULT} - ${ERROR}."
+    send_mattermost_notification "La copie du fichier de backup $BACKUP_FILE_NAME vers le bucket a échoué !\nCode retour : ${RCLONE_RESULT} - ${ERROR}."
     exit 1
 fi
