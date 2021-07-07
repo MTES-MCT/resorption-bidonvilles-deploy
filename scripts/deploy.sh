@@ -10,8 +10,8 @@ TARGET_SAFENAME=$(echo $TARGET_BRANCH | sed -e "s/\//-/g")
 
 function clearArchive() {
     echo "🟦 [Clearing /tmp files]"
-    rm -rf "/tmp/action-bidonvilles-$TARGET_SAFENAME"
-    rm -f "/tmp/action-bidonvilles-$TARGET_SAFENAME.zip"
+    rm -rf "/tmp/resorption-bidonvilles-$TARGET_SAFENAME"
+    rm -f "/tmp/resorption-bidonvilles-$TARGET_SAFENAME.zip"
     echo "🔹 Done"
 }
 
@@ -102,8 +102,8 @@ clearArchive
 ### Download target version
 echo "🟦 [Downloading the zipfile of the target branch]"
 {
-    echo "🔹 Curling https://github.com/MTES-MCT/action-bidonvilles/archive/refs/heads/$TARGET_BRANCH.zip to /tmp..."
-    curl -L --fail https://github.com/MTES-MCT/action-bidonvilles/archive/refs/heads/$TARGET_BRANCH.zip --output /tmp/action-bidonvilles-$TARGET_SAFENAME.zip
+    echo "🔹 Curling https://github.com/MTES-MCT/resorption-bidonvilles/archive/refs/heads/$TARGET_BRANCH.zip to /tmp..."
+    curl -L --fail https://github.com/MTES-MCT/resorption-bidonvilles/archive/refs/heads/$TARGET_BRANCH.zip --output /tmp/resorption-bidonvilles-$TARGET_SAFENAME.zip
 } || {
     echo "🔸 Failed to curl the target version"
     exit 1
@@ -111,10 +111,10 @@ echo "🟦 [Downloading the zipfile of the target branch]"
 
 {
     echo "🔹 Unzipping the zipfile"
-    unzip /tmp/action-bidonvilles-$TARGET_SAFENAME.zip -d /tmp
+    unzip /tmp/resorption-bidonvilles-$TARGET_SAFENAME.zip -d /tmp
 } || {
     echo "🔸 Failed to unzip the target version"
-    rm -f /tmp/action-bidonvilles-$TARGET_SAFENAME.zip
+    rm -f /tmp/resorption-bidonvilles-$TARGET_SAFENAME.zip
     exit 1
 }
 
@@ -230,7 +230,7 @@ echo "🔹 Done"
 echo "🟦 [Undoing migrations that existed in the source version but not in the target version]"
 FAILED=false
 for name in $SOURCE_MIGRATIONS; do
-    if [ ! -e /tmp/action-bidonvilles-$TARGET_SAFENAME/packages/api/db/migrations/$name ];
+    if [ ! -e /tmp/resorption-bidonvilles-$TARGET_SAFENAME/packages/api/db/migrations/$name ];
     then
         echo "🔹 Undoing $name..."
         MAKE_RESPONSE=$(make exec rb_api "yarn sequelize db:migrate:undo --name $name" | grep 'reverted')
