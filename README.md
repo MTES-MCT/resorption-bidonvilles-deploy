@@ -317,6 +317,14 @@ Plusieurs remarques :
             <td>RB_API_SENTRY_DSN<br/><em>prod-only</em></td>
             <td>DSN du projet Sentry API</td>
         </tr>
+        <tr>
+            <td>RB_API_SOLIGUIDE_KEY</td>
+            <td>Clé privé de communication avec l'API soliguide</td>
+        </tr>
+        <tr>
+            <td>RB_API_EMAIL_BLACKLIST</td>
+            <td>Une liste d'id utilisateurs, séparés par des virgules (sans espaces !), qui doivent être exclus des notifications mail d'ouverture et fermeture de site. Exemple : `1,2,3,4`</td>
+        </tr>
     </tbody>
 </table>
 
