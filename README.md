@@ -271,7 +271,7 @@ Plusieurs remarques :
         </tr>
         <tr>
             <td>RB_API_FRONT_URL</td>
-            <td>URL vers le frontend, finissant par un `/#`. Exemple : https://resorption-bidonvilles.localhost/#</td>
+            <td>URL vers le frontend, sans `/` à la fin. Exemple : https://resorption-bidonvilles.localhost</td>
         </tr>
         <tr>
             <td>RB_API_AUTH_SECRET</td>
