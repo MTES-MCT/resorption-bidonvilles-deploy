@@ -38,7 +38,7 @@ server {
         image/svg+xml
         image/x-icon
         application/rss+xml
-        application/atom_xml
+        application/atom_xml;
 
     ssl_certificate ${RB_PROXY_CERTIFICATE_PATH};
     ssl_certificate_key ${RB_PROXY_CERTIFICATE_KEY_PATH};
