@@ -325,6 +325,10 @@ Plusieurs remarques :
             <td>RB_API_EMAIL_BLACKLIST</td>
             <td>Une liste d'id utilisateurs, séparés par des virgules (sans espaces !), qui doivent être exclus des notifications mail d'ouverture et fermeture de site. Exemple : `1,2,3,4`</td>
         </tr>
+        <tr>
+            <td>RB_API_SEND_ACTIVITY_SUMMARY</td>
+            <td>Un booléen (0 ou 1), qui indique à l'API si elle doit programmer l'envoi automatique de résumé d'activités par mail. Théoriquement à 1 uniquement en production</td>
+        </tr>
     </tbody>
 </table>
 
