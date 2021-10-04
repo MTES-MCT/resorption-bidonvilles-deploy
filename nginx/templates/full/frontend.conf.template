@@ -21,6 +21,30 @@ server {
     listen [::]:443 ssl http2;
     server_name ${RB_PROXY_FRONTEND_HOST};
 
+    gzip on;
+    gzip_proxied any;
+    gzip_comp_level 9;
+    gzip_vary on;
+    gzip_buffers 16 8k;
+    gzip_min_length 50;
+    gzip_types
+    	text/css
+    	text/plain
+    	text/javascript
+    	application/javascript
+    	application/json
+    	application/x-javascript
+    	application/xml
+    	application/xml+rss
+    	application/xhtml+xml
+    	application/x-font-ttf
+    	application/x-font-opentype
+    	application/vnd.ms-fontobject
+    	image/svg+xml
+    	image/x-icon
+    	application/rss+xml
+    	application/atom_xml;
+
     ssl_certificate ${RB_PROXY_CERTIFICATE_PATH};
     ssl_certificate_key ${RB_PROXY_CERTIFICATE_KEY_PATH};
     ssl_trusted_certificate ${RB_PROXY_TRUSTED_CERTIFICATE_PATH};
