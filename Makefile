@@ -4,6 +4,9 @@ export
 dev:
 	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.dev.yml $(filter-out $@,$(MAKECMDGOALS))
 
+dev-exec:
+	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.dev.yml exec -T $(filter-out $@,$(MAKECMDGOALS))
+
 prod:
 	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml $(filter-out $@,$(MAKECMDGOALS))
 
