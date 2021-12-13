@@ -124,7 +124,7 @@ echo "🔹 Done"
 echo "🟦 [Fetching the list of source migrations]"
 echo "🔹 Getting a migrate:status..."
 
-SOURCE_MIGRATIONS=$(make exec rb_api "yarn sequelize db:migrate:status" | grep 'up' | grep -oE "[0-9]{6}-.+\.js")
+SOURCE_MIGRATIONS=$(make exec rb_api "yarn sequelize db:migrate:status" | grep 'up' | grep -oE "[0-9]{6,}-.+\.js")
 
 if [ $? -ne 0 ];
 then
