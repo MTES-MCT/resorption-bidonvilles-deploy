@@ -247,6 +247,12 @@ done
 if $FAILED;
 then
     rollback
+    restartServices
+
+    if [[ $? -ne 0 ]]; then
+        echo "🟥 Failed restarting services, please manually run 'make prod \"up -d \"'"
+    fi
+
     exit 1
 fi
 
@@ -256,7 +262,7 @@ echo "🟦 [Restarting services]"
 restartServices
 
 if [[ $? -ne 0 ]]; then
-    echo "🔸 Failed to restart services"
+    echo "🟥 Failed to restart services, please manually run 'make prod \"up -d \"'"
     rollback
     exit 1
 fi
