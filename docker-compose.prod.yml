@@ -6,6 +6,9 @@ services:
       - ${RB_PROXY_CONFIG_FOLDER}/common:/etc/nginx/common
       - ${RB_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
       - ${RB_DATA_FOLDER}/certbot/www:/var/www/certbot
+    depends_on:
+      - rb_frontend
+      - rb_api
 
   rb_database_agenda:
     expose:
@@ -13,9 +16,28 @@ services:
 
   rb_frontend:
     image: resorptionbidonvilles/frontend:${RB_FRONTEND_VERSION}
+    container_name: rb_frontend
+    networks:
+      - rb_network
+    expose:
+      - 80
+    env_file:
+      - ./config/.env
 
   rb_api:
     image: resorptionbidonvilles/api:${RB_API_VERSION}
+    container_name: rb_api
+    networks:
+      - rb_network
+    expose:
+      - 80
+    env_file:
+      - ./config/.env
+    depends_on:
+      rb_database_data:
+        condition: service_healthy
+      rb_database_agenda:
+        condition: service_healthy
 
   rb_certbot:
     image: certbot/certbot
