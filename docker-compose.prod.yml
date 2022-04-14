@@ -7,16 +7,23 @@ services:
       - ${RB_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
       - ${RB_DATA_FOLDER}/certbot/www:/var/www/certbot
     depends_on:
-      - rb_frontend
+      - rb_webapp
       - rb_api
+      - rb_www
 
-  rb_database_agenda:
+  rb_webapp:
+    image: resorptionbidonvilles/frontend:${RB_WEBAPP_VERSION}
+    container_name: rb_webapp
+    networks:
+      - rb_network
     expose:
-      - '27017-27019'
+      - 80
+    env_file:
+      - ./config/.env
 
-  rb_frontend:
-    image: resorptionbidonvilles/frontend:${RB_FRONTEND_VERSION}
-    container_name: rb_frontend
+  rb_www:
+    image: resorptionbidonvilles/www:${RB_WWW_VERSION}
+    container_name: rb_www
     networks:
       - rb_network
     expose:
@@ -48,3 +55,7 @@ services:
     networks:
       - rb_network
     command: "-c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  rb_database_agenda:
+    expose:
+      - '27017-27019'

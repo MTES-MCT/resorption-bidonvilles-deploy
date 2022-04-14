@@ -24,9 +24,9 @@
 
 ## 🤓 Préambule
 
-Résorption-bidonvilles est une plateforme publiée sous la forme d'images Docker dans [Docker Hub](https://hub.docker.com/u/resorptionbidonvilles). Il existe une image [pour l'api](https://hub.docker.com/r/resorptionbidonvilles/api), et une image [pour le frontend](https://hub.docker.com/r/resorptionbidonvilles/frontend).
+Résorption-bidonvilles est une plateforme publiée sous la forme d'images Docker dans [Docker Hub](https://hub.docker.com/u/resorptionbidonvilles). Il existe une image [pour l'api](https://hub.docker.com/r/resorptionbidonvilles/api), et deux images pour le frontend ([landing](https://hub.docker.com/r/resorptionbidonvilles/www) et [plateforme](https://hub.docker.com/r/resorptionbidonvilles/frontend)).
 
-Ce dépôt fournit une configuration Docker et Docker-compose complète permettant de monter une instance de dev, staging, ou production de *Résorption-bidonvilles*.
+Ce dépôt fournit une configuration Docker et Docker-compose permettant de monter une instance de dev, staging, ou production de *Résorption-bidonvilles*.
 
 ## 🛠 Pré-requis
 - make
@@ -46,10 +46,12 @@ Les étapes suivantes sont **obligatoires** :
 - sur votre machine, cloner les projets suivants dans des dossiers au même niveau :
   - ce dépôt dans un dossier `resorption-bidonvilles-deploy` 
   - [les sources de la plateforme](https://github.com/MTES-MCT/resorption-bidonvilles) dans un dossier `resorption-bidonvilles`
-- créer et remplir un fichier `config/.env` en copiant le fichier `config/.env.dev.sample` ([voir ici pour une explication complète sur ce fichier](#-configuration))
-- déclarer dans votre fichier `/etc/hosts` les deux domaines locaux suivants :
+- créer et remplir un fichier `resorption-bidonvilles-deploy/config/.env` en copiant le fichier `.env.dev.sample` ([voir ici pour une explication complète sur son contenu](#-configuration))
+- créer et remplir les fichiers `resorption-bidonvilles/packages/api/.env`, `resorption-bidonvilles/packages/frontend/www/.env`, `resorption-bidonvilles/packages/frontend/webapp/.env` en copiant les fichiers `env.sample` respectifs ([voir ici pour une explication complète sur leur contenu](#-configuration))
+- déclarer dans votre fichier `/etc/hosts` les trois domaines locaux suivants :
 ```
 127.0.0.1   resorption-bidonvilles.localhost
+127.0.0.1   app.resorption-bidonvilles.localhost
 127.0.0.1   api.resorption-bidonvilles.localhost
 ```
 - générer un certificat https auto-signé : `make localcert` (cette commande génère plusieurs certificats dans `data/ssl` qui seront utilisés par le proxy nginx)
@@ -57,15 +59,32 @@ Les étapes suivantes sont **obligatoires** :
 Les étapes suivantes sont optionnelles et peuvent être faites plus tard :
 - faire autoriser, au niveau de votre système, le certificat d'autorité `data/ssl/RootCA.crt` généré plus haut. Sur MacOS cela revient à rajouter ce certificat au trousseau d'accès système.
 
-### 2. Utiliser
-Le fichier Makefile fournit une target `dev` qui peut être utilisée comme un alias de docker-compose :
-- démarrer l'instance locale : `make dev up` ([voir ici la liste des services montés](#-liste-des-services-montés))
-- exécuter une commande dans le service api : `make dev exec rb_api yarn sequelize db:migrate`
-- démarrer une session SHELL sur le service api : `make dev exec rb_api bash`
-- forcer un build des images : `make dev build`
+### 2. Démarrer l'instance
+#### 2.1 Services tiers
+Les différents applicatifs de Résorption-bidonvilles dépendent de services tiers (bases de données, notamment). Ces services tiers sont mis à disposition via des containers Docker qui peuvent être démarrés et gérés grâce à docker-compose.
+
+Pour démarrer les services tiers ([voir ici la liste des services montés](#🧩-liste-des-services-montés)) :
+```
+docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+Pour simplifier l'utilisation, un fichier Makefile met à disposition une target `dev` qui sert d'alias. La commande ci-dessus peut-être réécrite ainsi :
+```
+make dev up
+```
+
+Plus généralement, vous pouvez utiliser cette target pour manipuler les différents services :
+- démarrer une session SHELL sur le service database_data : `make dev exec rb_database_data bash`
+- forcer un build des images : `make dev build
 - etc.
 
 Note : pour passer des options à ces commandes, entourez les de guillemets : `make dev "up --remove-orphans --build"`, autrement, Make retournera une erreur
+
+#### 2.2 Applicatifs
+Résorption-bidonvilles fonctionne avec trois applicatifs distincts que vous devez démarrer chacun séparément sur votre machine :
+- l'api : `cd resorption-bidonvilles/packages/api && yarn dev`
+- la landing (www) : `cd resorption-bidonvilles/packages/frontend/www && yarn dev`
+- la plateforme (webapp) : `cd resorption-bidonvilles/packages/frontend/webapp && yarn dev`
 
 <h2 id="deployer">🚀 Instance de staging / production</h2>
 
@@ -85,28 +104,24 @@ Note : pour passer des options à ces commandes, entourez les de guillemets : `m
 ## 🧩 Liste des services montés
 
 Quel que soit l'environnement choisi, les services suivants seront montés :
-- `rb_frontend` : le frontend de la plateforme, une SPA développée avec VueJS
-- `rb_api` : l'API REST qui alimente la plateforme, développée avec NodeJS
 - `rb_proxy` : le serveur Nginx qui écoute l'intégralité des requêtes HTTP(S) et redirige vers le service approprié sur la base du nom de domaine
 - `rb_database_data` : la base de données PostgreSQL utilisée par l'API
 - `rb_database_agenda` : la base de données MongoDB qui sert à planifier des tâches futures via l'outil `agenda`
 
-Selon l'environnement choisi, les services suivants pourront être montés également :
-- `rb_agendash` : un dashboard accessible via son navigateur pour monitorer `agenda`
+Sur les environnements de staging/production, les services suivants seront montés :
 - `rb_certbot` : un outil permettant le renouvellement automatique des certificats HTTPS
+- `rb_www` : le frontend de la landing-page
+- `rb_webapp` : le frontend de la plateforme, une SPA développée avec VueJS
+- `rb_api` : l'API REST qui alimente la plateforme et landing-page, développée avec NodeJS
 
 ## 📒 Configuration
 Plusieurs remarques :
 - tous les chemins indiqués comme "relatifs" dans cette section sont relatifs à la racine de ce dépôt.
-- les variables indiquées `prod-only` ne sont nécessaires que pour la production (pas la dev, ni staging)
+- les variables indiquées `prod-only` ne sont nécessaires que pour la production (pas la dev, ni staging) et inversement pour `dev-only`
 
 ### Commune
 <table>
     <tbody>
-        <tr>
-            <td>RB_FOLDER<br/><em>dev-only</em></td>
-            <td>Chemin relatif ou absolu vers la racine du dépôt `resorption-bidonvilles`</td>
-        </tr>
         <tr>
             <td>RB_VERSION<br/><em>prod-only</em></td>
             <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir les repositories sur <a href="https://hub.docker.com/r/resorptionbidonvilles">Docker Hub</a>). Par défaut, le même numéro de version est utilisé pour frontend et api, mais vous pouvez forcer des versions différentes en modifiant directement RB_API_VERSION et RB_FRONTEND_VERSION (voir plus bas).</td>
@@ -228,10 +243,6 @@ Plusieurs remarques :
             <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/r/resorptionbidonvilles/frontend/tags">Docker Hub</a>)</td>
         </tr>
         <tr>
-            <td>RB_FRONTEND_FOLDER</td>
-            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package frontend du dépôt `resorption-bidonvilles`.</td>
-        </tr>
-        <tr>
             <td>VUE_APP_API_URL</td>
             <td>URL vers l'API, ne finissant pas par un /. Exemple : https://api.resorption-bidonvilles.localhost</td>
         </tr>
@@ -260,10 +271,6 @@ Plusieurs remarques :
         <tr>
             <td>RB_API_VERSION</td>
             <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/r/resorptionbidonvilles/api/tags">Docker Hub</a>)</td>
-        </tr>
-        <tr>
-            <td>RB_API_FOLDER</td>
-            <td>Variable utilisée <em>uniquement</em> pour la version dev. Chemin relatif ou absolu vers la racine du package api du dépôt `resorption-bidonvilles`.</td>
         </tr>
         <tr>
             <td>RB_API_BACK_URL</td>
