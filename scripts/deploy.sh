@@ -274,6 +274,13 @@ timeout -s TERM 30 bash -c \
         sleep 5;\
     done' "https://${RB_PROXY_FRONTEND_HOST}"
 
+echo "🔹 Waiting for https://app.${RB_PROXY_FRONTEND_HOST} to respond with a 200..."
+timeout -s TERM 30 bash -c \
+    'while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' ${0})" != "200" ]]; do\
+        echo "🔹 Next ping in 5 seconds";\
+        sleep 5;\
+    done' "https://app.${RB_PROXY_FRONTEND_HOST}"
+
 echo "🔹 Waiting for https://${RB_PROXY_API_HOST} to respond with a 200..."
 timeout -s TERM 30 bash -c \
     'while [[ "$(curl -s -o /dev/null -L -w ''%{http_code}'' ${0})" != "200" ]]; do\

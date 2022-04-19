@@ -5,37 +5,6 @@ services:
     ports:
       - '27017-27019:27017-27019'
 
-  rb_frontend:
-    build:
-      context: ${RB_FRONTEND_FOLDER}
-      target: development
-    command: yarn dev
-    volumes:
-      - ${RB_FRONTEND_FOLDER}:/home/node/app
-      - rb_frontend_nodemodules:/home/node/app/node_modules
-
-  rb_api:
-    build:
-      context: ${RB_API_FOLDER}
-      target: development
-    command: yarn dev
-    volumes:
-      - ${RB_API_FOLDER}:/home/node/app
-      - rb_api_nodemodules:/home/node/app/node_modules
-
-  rb_agendash:
-    image: agenda/agendash
-    container_name: rb_agendash
-    environment:
-      - COLLECTION=agendaJobs
-      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@rb_database_agenda
-    ports:
-      - '3000:3000'
-    networks:
-      - rb_network
-    depends_on:
-      - rb_database_agenda
-
-volumes:
-  rb_frontend_nodemodules:
-  rb_api_nodemodules:
+  rb_proxy:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

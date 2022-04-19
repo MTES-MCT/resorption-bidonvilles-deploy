@@ -6,3 +6,4 @@ subjectAltName = @alt_names
 DNS.1 = localhost
 DNS.2 = ${RB_PROXY_FRONTEND_HOST}
 DNS.3 = ${RB_PROXY_API_HOST}
+DNS.4 = app.${RB_PROXY_FRONTEND_HOST}

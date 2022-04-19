@@ -47,7 +47,7 @@ server {
     include /etc/nginx/common/ssl[.]conf;
 
     location / {
-        proxy_pass http://rb_api:80;
+        proxy_pass ${RB_PROXY_API_URI};
         include /etc/nginx/common/headers[.]conf;
         add_header Content-Security-Policy "default-src 'none';";
     }
