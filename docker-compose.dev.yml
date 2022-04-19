@@ -4,3 +4,7 @@ services:
   rb_database_agenda:
     ports:
       - '27017-27019:27017-27019'
+
+  rb_proxy:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
