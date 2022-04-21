@@ -27,7 +27,7 @@ services:
     networks:
       - rb_network
     expose:
-      - 80
+      - 3000
     env_file:
       - ./config/.env
 
