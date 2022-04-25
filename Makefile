@@ -13,6 +13,9 @@ prod:
 exec:
 	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml exec -T $(filter-out $@,$(MAKECMDGOALS))
 
+sequelize:
+	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml exec rb_api yarn sequelize --options-path ./dist/.sequelizerc $(filter-out $@,$(MAKECMDGOALS))
+
 localcert:
 	envsubst < config/domains.ext.sample > config/domains.ext
 	mkdir -p data/ssl
