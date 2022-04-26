@@ -336,10 +336,6 @@ Plusieurs remarques :
             <td>RB_API_SEND_ACTIVITY_SUMMARY</td>
             <td>Un booléen (0 ou 1), qui indique à l'API si elle doit programmer l'envoi automatique de résumé d'activités par mail. Théoriquement à 1 uniquement en production</td>
         </tr>
-        <tr>
-            <td>RB_API_MATOMO_AUTH_TOKEN</td>
-            <td>Jeton d'accès à l'API Matomo (notamment pour accéder aux Weekly Active Users)</td>
-        </tr>
     </tbody>
 </table>
 
