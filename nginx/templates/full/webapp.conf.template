@@ -60,6 +60,6 @@ server {
         proxy_pass ${RB_PROXY_WEBAPP_URI};
         proxy_read_timeout 60;
         include /etc/nginx/common/headers[.]conf;
-        add_header Content-Security-Policy "default-src 'none'; connect-src 'self' https://api-adresse.data.gouv.fr/search/ https://${RB_PROXY_API_HOST}/ https://o551994.ingest.sentry.io/api/5676142/envelope/ https://stats.data.gouv.fr/piwik.php https://apicarto.ign.fr/api/; font-src 'self'; img-src 'self' https://${RB_PROXY_API_HOST}/ data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org https://server.arcgisonline.com; media-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://stats.data.gouv.fr/piwik.js; style-src 'self' 'unsafe-inline' https://unpkg.com/leaflet@1.3.4/dist/leaflet.css";
+        add_header Content-Security-Policy "default-src 'none'; connect-src 'self' https://api-adresse.data.gouv.fr/search/ https://${RB_PROXY_API_HOST}/ https://o551994.ingest.sentry.io/api/5676142/ https://stats.data.gouv.fr/piwik.php https://apicarto.ign.fr/api/; font-src 'self'; img-src 'self' https://${RB_PROXY_API_HOST}/ data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org https://server.arcgisonline.com; media-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://stats.data.gouv.fr/piwik.js; style-src 'self' 'unsafe-inline' https://unpkg.com/leaflet@1.3.4/dist/leaflet.css";
     }
 }
