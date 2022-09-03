@@ -233,7 +233,7 @@ for name in $SOURCE_MIGRATIONS; do
     if [ ! -e /tmp/resorption-bidonvilles-$TARGET_SAFENAME/packages/api/db/migrations/$name ];
     then
         echo "🔹 Undoing $name..."
-        MAKE_RESPONSE=$(make sequelize-tty db:migrate:undo --name $name | grep 'reverted')
+        MAKE_RESPONSE=$(make sequelize-tty "db:migrate:undo --name $name" | grep 'reverted')
 
         if [[ -z $MAKE_RESPONSE ]];
         then
