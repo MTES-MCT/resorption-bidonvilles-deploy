@@ -8,3 +8,24 @@ services:
   rb_proxy:
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  rb_database_tests:
+    build:
+      context: ./database
+    container_name: rb_database_tests
+    volumes:
+      - rb_database_tests
+    env_file:
+      - ./config/.env
+    ports:
+      - ${RB_TESTDATABASE_EXTERNAL_PORT}:5432
+    networks:
+      - rb_network
+    healthcheck:
+      test: pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}
+      interval: 10s
+      timeout: 10s
+      retries: 6
+
+volumes:
+  rb_database_tests:

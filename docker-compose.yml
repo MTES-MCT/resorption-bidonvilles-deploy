@@ -21,7 +21,7 @@ services:
       context: ./database
     container_name: rb_database_data
     volumes:
-      - ${RB_DATABASE_DATA_FOLDER}:/var/lib/postgresql/data
+      - rb_database_data:/var/lib/postgresql/data
       - rb_database_backups:${RB_DATABASE_LOCALBACKUP_FOLDER}
       - ${RB_DATA_FOLDER}/rb_database_tmp:/tmp
     env_file:
@@ -53,6 +53,8 @@ services:
       - ./config/.env
 
 volumes:
+  rb_database_data:
+    name: rb_database_data
   rb_database_backups:
     name: rb_database_backups
 
