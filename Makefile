@@ -31,7 +31,7 @@ remotecert:
 	mkdir -p data/ssl && openssl dhparam -out data/ssl/dhparam.pem 2048
 	RB_PROXY_TEMPLATE=certonly \
 	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml up -d rb_proxy \
-		&& docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml run rb_certbot -c 'certbot certonly --webroot --webroot-path=/var/www/certbot --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --force-renewal -d ${RB_PROXY_FRONTEND_HOST},app.${RB_PROXY_FRONTEND_HOST},${RB_PROXY_API_HOST}' \
+		&& docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml run rb_certbot -c 'certbot certonly --webroot --webroot-path=/var/www/certbot --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --force-renewal -d ${RB_PROXY_FRONTEND_HOST},app.${RB_PROXY_FRONTEND_HOST},${RB_PROXY_API_HOST},m.${RB_PROXY_FRONTEND_HOST}' \
 		&& docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml down
 
 local_backup:
