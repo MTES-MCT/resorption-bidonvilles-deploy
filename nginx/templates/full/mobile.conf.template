@@ -1,0 +1,65 @@
+server {
+    listen 80;
+    server_name m.${RB_PROXY_FRONTEND_HOST};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location /sockjs-node {
+        return 301 wss://$host$request_uri;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name m.${RB_PROXY_FRONTEND_HOST};
+
+    gzip on;
+    gzip_proxied any;
+    gzip_comp_level 9;
+    gzip_vary on;
+    gzip_buffers 16 8k;
+    gzip_min_length 50;
+    gzip_types
+        text/css
+        text/plain
+        text/javascript
+        application/javascript
+        application/json
+        application/x-javascript
+        application/xml
+        application/xml+rss
+        application/xhtml+xml
+        application/x-font-ttf
+        application/x-font-opentype
+        application/vnd.ms-fontobject
+        image/svg+xml
+        image/x-icon
+        application/rss+xml
+        application/atom_xml;
+
+    ssl_certificate ${RB_PROXY_CERTIFICATE_PATH};
+    ssl_certificate_key ${RB_PROXY_CERTIFICATE_KEY_PATH};
+    ssl_trusted_certificate ${RB_PROXY_TRUSTED_CERTIFICATE_PATH};
+
+    include /etc/nginx/common/ssl[.]conf;
+
+    location /sockjs-node {
+        proxy_pass ${RB_PROXY_MOBILE_URI};
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade"; 
+    }
+
+    location / {
+        proxy_pass ${RB_PROXY_MOBILE_URI};
+        proxy_read_timeout 60;
+        include /etc/nginx/common/headers[.]conf;
+        #add_header Content-Security-Policy "default-src 'none'; connect-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; script-src 'self'; style-src 'self'";
+    }
+}
