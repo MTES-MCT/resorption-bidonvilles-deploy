@@ -30,6 +30,10 @@ server {
         set $mobile_rewrite perform;
     }
 
+    if ($cookie_device = "webapp") {
+        set $mobile_rewrite do_not_perform;
+    }
+
     if ($mobile_rewrite = perform) {
         rewrite ^ https://m.${RB_PROXY_FRONTEND_HOST} redirect;
         break;
