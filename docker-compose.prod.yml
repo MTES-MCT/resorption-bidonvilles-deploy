@@ -31,6 +31,8 @@ services:
       - 80
     env_file:
       - ./config/.env
+    depends_on:
+      - rb_webapp
 
   rb_www:
     image: resorptionbidonvilles/www:${RB_WWW_VERSION}
