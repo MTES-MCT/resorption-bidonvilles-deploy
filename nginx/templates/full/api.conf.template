@@ -43,6 +43,7 @@ server {
     ssl_certificate ${RB_PROXY_CERTIFICATE_PATH};
     ssl_certificate_key ${RB_PROXY_CERTIFICATE_KEY_PATH};
     ssl_trusted_certificate ${RB_PROXY_TRUSTED_CERTIFICATE_PATH};
+    client_max_body_size 10M;
 
     include /etc/nginx/common/ssl[.]conf;
 
