@@ -10,7 +10,6 @@ services:
       - rb_webapp
       - rb_api
       - rb_www
-      - rb_mobile
 
   rb_webapp:
     image: resorptionbidonvilles/frontend:${RB_WEBAPP_VERSION}
@@ -21,18 +20,6 @@ services:
       - 80
     env_file:
       - ./config/.env
-
-  rb_mobile:
-    image: resorptionbidonvilles/mobile:${RB_MOBILE_VERSION}
-    container_name: rb_mobile
-    networks:
-      - rb_network
-    expose:
-      - 80
-    env_file:
-      - ./config/.env
-    depends_on:
-      - rb_webapp
 
   rb_www:
     image: resorptionbidonvilles/www:${RB_WWW_VERSION}
