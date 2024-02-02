@@ -17,6 +17,11 @@ server {
 }
 
 server {
+    server_name ${RB_PROXY_FRONTEND_HOST_OLD};
+    return 301 $scheme://${RB_PROXY_FRONTEND_HOST}$request_uri;
+}
+
+server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name ${RB_PROXY_FRONTEND_HOST};

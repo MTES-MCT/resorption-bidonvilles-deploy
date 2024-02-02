@@ -6,3 +6,12 @@ server {
         root /var/www/certbot;
     }
 }
+
+server {
+    listen 80;
+    server_name ${RB_PROXY_FRONTEND_HOST_OLD};
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+}
