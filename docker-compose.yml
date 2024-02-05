@@ -14,7 +14,7 @@ services:
     volumes:
       - ${RB_PROXY_CONFIG_FOLDER}/http.conf:/etc/nginx/conf.d/http.conf
       - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/etc/nginx/templates
-      - ${RB_DATA_FOLDER}/ssl:/etc/ssl
+      - ${RB_DEPLOY_DATA_FOLDER}/ssl:/etc/ssl
 
   rb_database_data:
     build:
@@ -23,7 +23,7 @@ services:
     volumes:
       - ${RB_DATABASE_DATA_FOLDER}:/var/lib/postgresql/data
       - rb_database_backups:${RB_DATABASE_LOCALBACKUP_FOLDER}
-      - ${RB_DATA_FOLDER}/rb_database_tmp:/tmp
+      - ${RB_DEPLOY_DATA_FOLDER}/rb_database_tmp:/tmp
     env_file:
       - ./config/.env
     ports:
