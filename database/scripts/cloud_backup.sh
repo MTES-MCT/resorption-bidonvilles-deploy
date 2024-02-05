@@ -7,7 +7,7 @@ set +a
 # fonction qui attend en paramètre le message à publier sur Mattermost
 send_mattermost_notification() {
     echo -e $1
-    curl -X POST --data-urlencode "payload={\"channel\": \"notif-alertes-backup\", \"username\": \"Alerte Résorption Bidonvilles\", \"icon_emoji\": \":robot:\", \"text\": \"$1\"}" $RB_API_MATTERMOST_WEBHOOK
+    curl -X POST --data-urlencode "payload={\"channel\": \"notif-alertes-backup\", \"username\": \"Alerte Résorption Bidonvilles\", \"icon_emoji\": \":robot:\", \"text\": \"$1\"}" $RB_REMOTEBACKUP_MATTERMOST_WEBHOOK
 }
 
 ############################################
@@ -17,7 +17,7 @@ send_mattermost_notification() {
 
 # on identifie le fichier de backup du jour le plus récent
 DATE=$(date "+%Y-%m-%d")
-BACKUP_FILE_PATH=$(docker exec -t rb_database_data sh -c "find $RB_DATABASE_LOCALBACKUP_FOLDER -name \"$DATE-*\" -print0 | xargs -r -0 ls -1 -t | head -1")
+BACKUP_FILE_PATH=$(docker exec -t rb_database_data sh -c "find $RB_REMOTEBACKUP_LOCAL_BACKUP_FOLDER -name \"$DATE-*\" -print0 | xargs -r -0 ls -1 -t | head -1")
 
 if [[ -z "$BACKUP_FILE_PATH" ]]
 then

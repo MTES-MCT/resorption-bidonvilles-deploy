@@ -4,15 +4,15 @@ services:
   rb_proxy:
     volumes:
       - ${RB_PROXY_CONFIG_FOLDER}/common:/etc/nginx/common
-      - ${RB_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
-      - ${RB_DATA_FOLDER}/certbot/www:/var/www/certbot
+      - ${RB_DEPLOY_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
+      - ${RB_DEPLOY_DATA_FOLDER}/certbot/www:/var/www/certbot
     depends_on:
       - rb_webapp
       - rb_api
       - rb_www
 
   rb_webapp:
-    image: resorptionbidonvilles/frontend:${RB_WEBAPP_VERSION}
+    image: resorptionbidonvilles/frontend:${RB_DEPLOY_VERSION}
     container_name: rb_webapp
     networks:
       - rb_network
@@ -22,7 +22,7 @@ services:
       - ./config/.env
 
   rb_www:
-    image: resorptionbidonvilles/www:${RB_WWW_VERSION}
+    image: resorptionbidonvilles/www:${RB_DEPLOY_VERSION}
     container_name: rb_www
     networks:
       - rb_network
@@ -32,7 +32,7 @@ services:
       - ./config/.env
 
   rb_api:
-    image: resorptionbidonvilles/api:${RB_API_VERSION}
+    image: resorptionbidonvilles/api:${RB_DEPLOY_VERSION}
     container_name: rb_api
     networks:
       - rb_network
@@ -49,8 +49,8 @@ services:
   rb_certbot:
     image: certbot/certbot
     volumes:
-      - ${RB_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
-      - ${RB_DATA_FOLDER}/certbot/www:/var/www/certbot
+      - ${RB_DEPLOY_DATA_FOLDER}/certbot/conf:/etc/letsencrypt
+      - ${RB_DEPLOY_DATA_FOLDER}/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh"
     networks:
       - rb_network

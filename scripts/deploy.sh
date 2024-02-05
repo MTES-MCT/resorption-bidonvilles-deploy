@@ -27,10 +27,10 @@ function clearAll() {
 }
 
 function updateRbVersion() {
-    sed -i'.bak' "s/RB_VERSION=$1/RB_VERSION=$2/g" config/.env
+    sed -i'.bak' "s/RB_DEPLOY_VERSION=$1/RB_DEPLOY_VERSION=$2/g" config/.env
     rm config/.env.bak
 
-    if [[ "$(cat config/.env | grep 'RB_VERSION=' | grep -oE "[^=]+$")" != $2 ]];
+    if [[ "$(cat config/.env | grep 'RB_DEPLOY_VERSION=' | grep -oE "[^=]+$")" != $2 ]];
     then
         return 1
     fi
@@ -39,7 +39,7 @@ function updateRbVersion() {
 }
 
 function restoreRbVersion() {
-    echo "🔹 Restoring RB_VERSION inside config/.env ..."
+    echo "🔹 Restoring RB_DEPLOY_VERSION inside config/.env ..."
     updateRbVersion $TARGET_DOCKER_IMAGE $SOURCE_VERSION
     return $?
 }
@@ -82,7 +82,7 @@ function rollback() {
     restoreRbVersion
     if [[ $? -ne 0 ]];
     then
-        echo "🟥 Failed restoring RB_VERSION: please edit config/.env manually and set RB_VERSION to $SOURCE_VERSION"
+        echo "🟥 Failed restoring RB_DEPLOY_VERSION: please edit config/.env manually and set RB_DEPLOY_VERSION to $SOURCE_VERSION"
     fi
 
     restoreDatabase
@@ -136,9 +136,9 @@ fi
 echo "🔹 Done"
 
 ### Backup current version
-echo "🟦 [Backing up the value of the source RB_VERSION]"
+echo "🟦 [Backing up the value of the source RB_DEPLOY_VERSION]"
 echo "🔹 Parsing config/.env..."
-SOURCE_VERSION=$(cat config/.env | grep 'RB_VERSION=' | grep -oE "[^=]+$")
+SOURCE_VERSION=$(cat config/.env | grep 'RB_DEPLOY_VERSION=' | grep -oE "[^=]+$")
 
 if [[ -z $SOURCE_VERSION ]];
 then
@@ -194,13 +194,13 @@ fi
 echo "🔹 Done"
 
 ### Let's deploy
-echo "🟦 [Setting RB_VERSION to $TARGET_DOCKER_IMAGE in config/.env]"
+echo "🟦 [Setting RB_DEPLOY_VERSION to $TARGET_DOCKER_IMAGE in config/.env]"
 echo "🔹 Writing into config/.env..."
 updateRbVersion $SOURCE_VERSION $TARGET_DOCKER_IMAGE
 
 if [[ $? -ne 0 ]];
 then
-    echo "🔸 Failed updating RB_VERSION"
+    echo "🔸 Failed updating RB_DEPLOY_VERSION"
     clearAll
     exit 1
 fi
@@ -217,7 +217,7 @@ then
     restoreRbVersion
     if [[ $? -ne 0 ]];
     then
-        echo "🟥 Failed restoring RB_VERSION: please edit config/.env manually and set RB_VERSION to $SOURCE_VERSION"
+        echo "🟥 Failed restoring RB_DEPLOY_VERSION: please edit config/.env manually and set RB_DEPLOY_VERSION to $SOURCE_VERSION"
     fi
 
     clearAll

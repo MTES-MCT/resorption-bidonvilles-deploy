@@ -123,11 +123,11 @@ Plusieurs remarques :
 <table>
     <tbody>
         <tr>
-            <td>RB_VERSION<br/><em>prod-only</em></td>
-            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir les repositories sur <a href="https://hub.docker.com/r/resorptionbidonvilles">Docker Hub</a>). Par défaut, le même numéro de version est utilisé pour frontend et api, mais vous pouvez forcer des versions différentes en modifiant directement RB_API_VERSION et RB_FRONTEND_VERSION (voir plus bas).</td>
+            <td>RB_DEPLOY_VERSION<br/><em>prod-only</em></td>
+            <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir les repositories sur <a href="https://hub.docker.com/r/resorptionbidonvilles">Docker Hub</a>). Par défaut, le même numéro de version est utilisé pour frontend et api, mais vous pouvez forcer des versions différentes en modifiant directement RB_DEPLOY_VERSION et RB_FRONTEND_VERSION (voir plus bas).</td>
         </tr>
         <tr>
-            <td>RB_DATA_FOLDER</td>
+            <td>RB_DEPLOY_DATA_FOLDER</td>
             <td>Chemin relatif ou absolu vers le dossier `data` qui doit être créé pour stocker par défaut les données locales (certificats https, base de données ,etc.)</td>
         </tr>
     </tbody>
@@ -269,7 +269,7 @@ Plusieurs remarques :
 <table>
     <tbody>
         <tr>
-            <td>RB_API_VERSION</td>
+            <td>RB_DEPLOY_VERSION</td>
             <td>Variable utilisée <em>uniquement</em> pour les versions prod/staging. Nom du tag de l'image docker à utiliser (voir <a href="https://hub.docker.com/r/resorptionbidonvilles/api/tags">Docker Hub</a>)</td>
         </tr>
         <tr>
