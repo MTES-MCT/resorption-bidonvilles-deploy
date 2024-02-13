@@ -34,6 +34,17 @@ remotecert:
 		&& docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml run rb_certbot -c 'certbot certonly --webroot --webroot-path=/var/www/certbot --email admin@resorption-bidonvilles.beta.gouv.fr --agree-tos --no-eff-email --force-renewal -d ${RB_PROXY_FRONTEND_HOST},app.${RB_PROXY_FRONTEND_HOST},${RB_PROXY_API_HOST},m.${RB_PROXY_FRONTEND_HOST}' \
 		&& docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml down
 
+dbcert:
+	mkdir -p data/rb_database_ssl
+	openssl req -days 3650 -new -text -nodes -subj '/CN=localhost' -keyout data/rb_database_ssl/server.key -out data/rb_database_ssl/server.csr
+	openssl req -days 3650 -x509 -text -in data/rb_database_ssl/server.csr -key data/rb_database_ssl/server.key -out data/rb_database_ssl/server.crt
+	cp data/rb_database_ssl/server.crt data/rb_database_ssl/root.crt
+	rm data/rb_database_ssl/server.csr
+	openssl req -days 3650 -new -nodes -subj '/CN=rbadmin' -keyout data/rb_database_ssl/client.key -out data/rb_database_ssl/client.csr
+	openssl x509 -days 3650 -req  -CAcreateserial -in data/rb_database_ssl/client.csr -CA data/rb_database_ssl/root.crt -CAkey data/rb_database_ssl/server.key -out data/rb_database_ssl/client.crt
+	rm data/rb_database_ssl/client.csr
+	chmod 600 data/rb_database_ssl/server.key
+
 local_backup:
 	docker-compose --env-file ./config/.env -f docker-compose.yml -f docker-compose.prod.yml exec -T rb_database_data local_backup
 

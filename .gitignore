@@ -4,3 +4,4 @@ domains.ext
 .DS_Store
 rclone.conf
 .vscode
+database/postgresql.conf

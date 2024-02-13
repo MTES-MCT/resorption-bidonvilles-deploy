@@ -24,6 +24,9 @@ services:
       - ${RB_DATABASE_DATA_FOLDER}:/var/lib/postgresql/data
       - rb_database_backups:${RB_DATABASE_LOCALBACKUP_FOLDER}
       - ${RB_DEPLOY_DATA_FOLDER}/rb_database_tmp:/tmp
+      - ${RB_DEPLOY_DATA_FOLDER}/rb_database_ssl:/etc/ssl
+      - ${RB_DEPLOY_DATABASE_CONFIG_FOLDER}/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ${RB_DEPLOY_DATABASE_CONFIG_FOLDER}/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     env_file:
       - ./config/.env
     ports:
