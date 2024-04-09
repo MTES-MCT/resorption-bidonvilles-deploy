@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   rb_proxy:
-    image: nginx:1.19-alpine
+    image: nginx:1.25.4-alpine
     container_name: rb_proxy
     env_file:
       - ./config/.env
