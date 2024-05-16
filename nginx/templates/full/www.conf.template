@@ -55,5 +55,6 @@ server {
         proxy_pass ${RB_PROXY_WWW_URI};
         include /etc/nginx/common/headers[.]conf;
         add_header Content-Security-Policy "default-src 'none'; connect-src ws://localhost:*/_nuxt/ https://${RB_PROXY_API_HOST}/ ${RB_PROXY_MATOMO_HOST} https://${RB_PROXY_FRONTEND_HOST}/_nuxt/; font-src 'self'; img-src 'self' ${RB_PROXY_MATOMO_HOST}; media-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'";
+        include /etc/nginx/naxsi.rules;
     }
 }
