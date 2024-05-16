@@ -50,5 +50,6 @@ server {
         proxy_pass ${RB_PROXY_API_URI};
         include /etc/nginx/common/headers[.]conf;
         add_header Content-Security-Policy "default-src 'none';";
+        include /etc/nginx/naxsi.rules;
     }
 }

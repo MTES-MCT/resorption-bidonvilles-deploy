@@ -1,0 +1,10 @@
+
+SecRulesEnabled;
+DeniedUrl "/error.html";
+
+## Check Naxsi rules
+CheckRule "$SQL >= 8" ALLOW;
+CheckRule "$RFI >= 8" BLOCK;
+CheckRule "$TRAVERSAL >= 4" BLOCK;
+CheckRule "$EVADE >= 4" BLOCK;
+CheckRule "$XSS >= 8" BLOCK;
