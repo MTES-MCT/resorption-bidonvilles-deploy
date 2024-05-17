@@ -1,4 +1,5 @@
 
+LearningMode;
 SecRulesEnabled;
 DeniedUrl "/error.html";
 
