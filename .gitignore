@@ -3,4 +3,6 @@ domains.ext
 .env
 .DS_Store
 rclone.conf
+rclone.conf.scaleway
+rclone.conf.ovh
 .vscode
