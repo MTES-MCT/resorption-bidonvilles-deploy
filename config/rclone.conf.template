@@ -1,18 +1,19 @@
-[scaleway]
-type = s3
-provider = Scaleway
+[rb-s3-bucket]
+type = swift
 env_auth = false
-access_key_id = ${RB_REMOTEBACKUP_KEY_ID}
-secret_access_key = ${RB_REMOTEBACKUP_KEY_SECRET}
-region = fr-par
-endpoint = ${RB_REMOTEBACKUP_BUCKET_ENDPOINT}
-acl = private
-storage_class = STANDARD
+auth_version = 3
+auth = ${RB_REMOTEBACKUP_AUTH_URL}
+endpoint_type = public
+tenant_domain = default
+tenant = ${RB_REMOTEBACKUP_TENANT_ID}
+domain = default
+user = ${RB_REMOTEBACKUP_BUCKET_USERNAME}
+key = ${RB_REMOTEBACKUP_KEY_ID}
+region = SBG
 
 [secret]
 type = crypt
-remote = scaleway:${RB_REMOTEBACKUP_BUCKET_NAME}
+remote = rb-s3-bucket:${RB_REMOTEBACKUP_BUCKET_NAME}
 filename_encryption = off
 directory_name_encryption = false
-password = ${RB_REMOTEBACKUP_BUCKET_PASSWORD}
-
+password = ${RB_REMOTEBACKUP_KEY_SECRET}
