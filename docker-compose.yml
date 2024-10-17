@@ -55,9 +55,38 @@ services:
     env_file:
       - ./config/.env
 
+  rb_antivirus:
+    image: ajilaag/clamav-rest
+    container_name: rb_antivirus
+    env_file:
+      - ./config/.env
+    mem_reservation: "2G"
+    mem_limit: "3G"
+    ports:
+      - ${RB_CLAMAV_EXTERNAL_HTTP_PORT}:${RB_CLAMAV_INTERNAL_HTTP_PORT}
+      - ${RB_CLAMAV_EXTERNAL_HTTPS_PORT}:${RB_CLAMAV_INTERNAL_HTTPS_PORT}
+    user: clamav
+    volumes:
+      - rb_clamav:/clamav
+      - rb_clamav_run:/run/clamav
+      - rb_clamav_log:/var/log/clamav
+    networks:
+      - rb_network
+    healthcheck:
+      test: clamscan --version
+      interval: 60s
+      timeout: 10s
+      retries: 3
+
 volumes:
   rb_database_backups:
     name: rb_database_backups
+  rb_clamav:
+    name: rb_clamav
+  rb_clamav_log:
+    name: rb_clamav_log
+  rb_clamav_run:
+    name: rb_clamav_run
 
 networks:
   rb_network:
