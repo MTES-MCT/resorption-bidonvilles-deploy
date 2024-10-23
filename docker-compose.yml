@@ -67,9 +67,9 @@ services:
       - ${RB_CLAMAV_EXTERNAL_HTTPS_PORT}:${RB_CLAMAV_INTERNAL_HTTPS_PORT}
     user: clamav
     volumes:
-      - rb_clamav:/clamav
-      - rb_clamav_run:/run/clamav
-      - rb_clamav_log:/var/log/clamav
+      - rb_antivirus_data:/clamav
+      - rb_antivirus_run:/run/clamav
+      - rb_antivirus_log:/var/log/clamav
     networks:
       - rb_network
     healthcheck:
@@ -81,12 +81,12 @@ services:
 volumes:
   rb_database_backups:
     name: rb_database_backups
-  rb_clamav:
-    name: rb_clamav
-  rb_clamav_log:
-    name: rb_clamav_log
-  rb_clamav_run:
-    name: rb_clamav_run
+  rb_antivirus_data:
+    name: rb_antivirus_data
+  rb_antivirus_log:
+    name: rb_antivirus_log
+  rb_antivirus_run:
+    name: rb_antivirus_run
 
 networks:
   rb_network:
