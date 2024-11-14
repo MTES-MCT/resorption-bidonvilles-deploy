@@ -1,0 +1,17 @@
+[scaleway]
+type = s3
+provider = Scaleway
+env_auth = false
+access_key_id = ${RB_DATABASE_REMOTEBACKUP_KEY_ID}
+secret_access_key = ${RB_DATABASE_REMOTEBACKUP_KEY_SECRET}
+region = fr-par
+endpoint = ${RB_DATABASE_REMOTEBACKUP_BUCKET_ENDPOINT}
+acl = private
+storage_class = STANDARD
+
+[secret]
+type = crypt
+remote = scaleway:${RB_DATABASE_REMOTEBACKUP_BUCKET_NAME}
+filename_encryption = off
+directory_name_encryption = false
+password = ${RB_DATABASE_REMOTEBACKUP_BUCKET_PASSWORD}

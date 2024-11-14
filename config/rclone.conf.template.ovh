@@ -1,0 +1,19 @@
+[rb-s3-bucket]
+type = swift
+env_auth = false
+auth_version = 3
+auth = ${RB_REMOTEBACKUP_AUTH_URL}
+endpoint_type = public
+tenant_domain = default
+tenant = ${RB_REMOTEBACKUP_TENANT_ID}
+domain = default
+user = ${RB_REMOTEBACKUP_BUCKET_USERNAME}
+key = ${RB_REMOTEBACKUP_KEY_ID}
+region = SBG
+
+[secret]
+type = crypt
+remote = rb-s3-bucket:${RB_REMOTEBACKUP_BUCKET_NAME}
+filename_encryption = off
+directory_name_encryption = false
+password = ${RB_REMOTEBACKUP_KEY_SECRET}
