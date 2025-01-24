@@ -1,6 +1,6 @@
 <p align="center">
-  <span href="https://resorption-bidonvilles.beta.gouv.fr">
-    <img src="https://resorption-bidonvilles.beta.gouv.fr/img/Marianne.d37c6b1e.svg" alt="Résorption-bidonvilles" align="down" height="30">
+  <span href="https://resorption-bidonvilles.dihal.gouv.fr">
+    <img src="https://resorption-bidonvilles.dihal.gouv.fr/img/Marianne.d37c6b1e.svg" alt="Résorption-bidonvilles" align="down" height="30">
     <strong><font size="6">Résorption-bidonvilles</font></strong><br/>
     Agir pour résorber les bidonvilles
   </span>
@@ -13,7 +13,7 @@
     <a href="https://github.com/MTES-MCT/resorption-bidonvilles-deploy/wiki"><strong>Consulter le wiki »</strong></a>
     <br />
     <br />
-    <a href="https://resorption-bidonvilles.beta.gouv.fr">Voir la plateforme</a>
+    <a href="https://resorption-bidonvilles.dihal.gouv.fr">Voir la plateforme</a>
     ·
     <a href="#-pré-requis">Déployer une instance sur sa machine</a>
     ·
