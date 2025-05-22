@@ -18,6 +18,7 @@ services:
       - ${RB_PROXY_CONFIG_FOLDER}/http.conf:/etc/nginx/conf.d/http.conf
       - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/etc/nginx/templates
       - ${RB_DEPLOY_DATA_FOLDER}/ssl:/etc/ssl
+      - ${RB_PROXY_WAF_FOLDER}:/etc/nginx/naxsi
 
   rb_database_data:
     build:
@@ -30,7 +31,7 @@ services:
     env_file:
       - ./config/.env
     ports:
-      - ${RB_DATABASE_EXTERNAL_PORT}:5432
+      - 127.0.0.1:${RB_DATABASE_EXTERNAL_PORT}:5432
     networks:
       - rb_network
     healthcheck:
