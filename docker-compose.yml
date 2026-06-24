@@ -14,10 +14,10 @@ services:
     networks:
       - rb_network
     volumes:
-      - ${RB_PROXY_CONFIG_FOLDER}/common/nginx.conf:/etc/nginx/nginx.conf
-      - ${RB_PROXY_CONFIG_FOLDER}/http.conf:/etc/nginx/conf.d/http.conf
-      - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/etc/nginx/templates
-      - ${RB_DEPLOY_DATA_FOLDER}/ssl:/etc/ssl
+      # Alignement des montages sur le dossier de configuration natif de la build Alpine
+      - ${RB_PROXY_CONFIG_FOLDER}/common/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
+      - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/usr/local/nginx/conf/templates:ro
+      - ${RB_DEPLOY_DATA_FOLDER}/ssl:/etc/ssl:ro
 
   rb_database_data:
     build:
