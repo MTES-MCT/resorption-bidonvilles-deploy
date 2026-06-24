@@ -21,6 +21,8 @@ RUN apk add --no-cache \
     linux-headers \
     openssl-dev \
     pcre2-dev \
+    # PCRE2 (et non l'ancien "libpcre3"/PCRE1, en fin de vie) : requis par nginx ≥1.21.5
+    # et par libnaxsi, qui ne compile pas contre PCRE1.
     wget
 
 WORKDIR /tmp
