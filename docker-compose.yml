@@ -7,8 +7,10 @@ services:
     env_file:
       - ./config/.env
     ports:
-      - 80:80
-      - 443:443
+      # nginx tourne en utilisateur non privilégié (USER nginx) et écoute en 8080/8443 ;
+      # Docker (root) publie les ports standards 80/443 vers ces ports internes.
+      - 80:8080
+      - 443:8443
     networks:
       - rb_network
     volumes:
