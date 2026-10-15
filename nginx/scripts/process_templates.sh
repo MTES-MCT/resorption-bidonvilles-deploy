@@ -11,7 +11,7 @@ entrypoint_log() {
 }
 
 add_stream_block() {
-  local conffile="/etc/nginx/nginx.conf"
+  local conffile="/usr/local/nginx/conf/nginx.conf"
 
   if grep -q -E "\s*stream\s*\{" "$conffile"; then
     entrypoint_log "$ME: $conffile contains a stream block; include $stream_output_dir/*.conf to enable stream templates"
@@ -29,11 +29,11 @@ END
 }
 
 auto_envsubst() {
-  local template_dir="${NGINX_ENVSUBST_TEMPLATE_DIR:-/etc/nginx/templates}"
+  local template_dir="${NGINX_ENVSUBST_TEMPLATE_DIR:-/usr/local/nginx/conf/templates}"
   local suffix="${NGINX_ENVSUBST_TEMPLATE_SUFFIX:-.template}"
-  local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/etc/nginx/conf.d}"
+  local output_dir="${NGINX_ENVSUBST_OUTPUT_DIR:-/usr/local/nginx/conf/conf.d}"
   local stream_suffix="${NGINX_ENVSUBST_STREAM_TEMPLATE_SUFFIX:-.stream-template}"
-  local stream_output_dir="${NGINX_ENVSUBST_STREAM_OUTPUT_DIR:-/etc/nginx/stream-conf.d}"
+  local stream_output_dir="${NGINX_ENVSUBST_STREAM_OUTPUT_DIR:-/usr/local/nginx/conf/stream-conf.d}"
   local filter="${NGINX_ENVSUBST_FILTER:-}"
 
   local template defined_envs relative_path output_path subdir
@@ -75,6 +75,6 @@ auto_envsubst() {
 
 auto_envsubst
 # start nginx
-/usr/sbin/nginx -g 'daemon off;'
+/usr/local/nginx/sbin/nginx -g 'daemon off;'
 
 exit 0

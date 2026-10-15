@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   rb_database_agenda:
     ports:
@@ -8,25 +6,25 @@ services:
   rb_proxy:
     extra_hosts:
       - "host.docker.internal:host-gateway"
-  # localstack:
-  #   container_name: localstack
-  #   image: localstack/localstack:latest
-  #   ports:
-  #     - "${RB_LOCALSTACK_EXTERNAL_PORT}:4566" # LocalStack Gateway
-  #     - "4510-4559:4510-4559" # external services port range
-  #   environment:
-  #     - EXTRA_CORS_ALLOWED_ORIGINS=app://.
-  #     - AWS_DEFAULT_REGION=us-east-1
-  #     - AWS_ACCESS_KEY_ID=test
-  #     - AWS_SECRET_ACCESS_KEY=test
-  #     - DEBUG=1
-  #     - DOCKER_HOST=unix:///var/run/docker.sock
-  #     - HOSTNAME=localstack
-  #     - HOSTNAME_EXTERNAL=localstack
-  #     - SERVICES=lambda,s3
-  #     - DATA_DIR=/tmp/localstack/data
-  #   volumes:
-  #     - "${RB_LOCALSTACK_DATA_FOLDER:-/tmp/localstack}:/tmp/localstack"
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   networks:
-  #     - rb_network
+  rb_localstack:
+    container_name: rb_localstack
+    image: localstack/localstack:latest
+    ports:
+      - "${RB_LOCALSTACK_EXTERNAL_PORT}:4566" # LocalStack Gateway
+      - "4510-4559:4510-4559" # external services port range
+    environment:
+      - LOCALSTACK_AUTH_TOKEN=${RB_LOCALSTACK_AUTH_TOKEN}
+      - EXTRA_CORS_ALLOWED_ORIGINS=app://.
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOSTNAME=localstack
+      - HOSTNAME_EXTERNAL=localstack
+      - SERVICES=lambda,s3
+    volumes:
+      - "${RB_LOCALSTACK_DATA_FOLDER:-/tmp/localstack}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - rb_network
