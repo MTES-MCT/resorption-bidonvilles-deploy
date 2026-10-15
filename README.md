@@ -341,8 +341,8 @@ Plusieurs remarques :
 
 ## 🙇🏼 Contributeur(ices)
 
-| <img src="https://avatars3.githubusercontent.com/u/1801091?v=3" width="120px;"/><br /><sub><b>Anis Safine Laget</b></sub> | <img src="https://avatars3.githubusercontent.com/u/50863659?v=3" width="120px;"/><br /><sub><b>Christophe Benard</b></sub> | <img src="https://avatars3.githubusercontent.com/u/5053593?v=3" width="120px;"/><br /><sub><b>⠀⠀Gaël Destrem</b></sub> |
-| --- | --- | --- |
+| <img src="https://avatars3.githubusercontent.com/u/1801091?v=3" width="120px;"/><br /><sub><b>Anis Safine Laget</b></sub> | <img src="https://avatars3.githubusercontent.com/u/50863659?v=3" width="120px;"/><br /><sub><b>Christophe Bénard</b></sub> | <img src="https://avatars.githubusercontent.com/u/34971399?v=4" width="120px;"/><br /><sub><b>⠀⠀Gilles Cognin</b></sub> | <img src="https://avatars3.githubusercontent.com/u/5053593?v=3" width="120px;"/><br /><sub><b>⠀⠀Gaël Destrem</b></sub> | <img src="https://avatars3.githubusercontent.com/u/94321132?v=3" width="120px;"/><br /><sub><b>⠀Grégoire Thomazeau</b></sub> |
+| --- | --- | --- | --- | --- |
 
 ## 📝 Licence
 Ce projet est distribué sous license [AGPL-3.0](LICENSE).
