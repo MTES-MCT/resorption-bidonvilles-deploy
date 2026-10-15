@@ -27,8 +27,8 @@ RUN apk add --no-cache \
 
 WORKDIR /tmp
 
-RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
-    tar -zxf nginx-${NGINX_VERSION}.tar.gz && \
+RUN wget --max-redirect=0 "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
+    tar -zxf "nginx-${NGINX_VERSION}.tar.gz" && \
     git clone --depth 1 --branch "${NAXSI_VERSION}" --recurse-submodules https://github.com/wargio/naxsi.git
 
 WORKDIR /tmp/nginx-${NGINX_VERSION}
@@ -87,9 +87,8 @@ RUN apk add --no-cache \
     libxslt \
     openssl \
     pcre2 \
-    tzdata
-
-RUN addgroup -g 101 -S nginx && \
+    tzdata && \
+    addgroup -g 101 -S nginx && \
     adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -g "nginx" nginx
 
 COPY --from=builder --chown=root:root /usr/local/nginx /usr/local/nginx
@@ -103,8 +102,7 @@ COPY naxsi/ /usr/local/nginx/conf/naxsi/
 RUN mkdir -p /usr/local/nginx/conf/conf.d /usr/local/nginx/conf/templates && \
     chown -R nginx:nginx /usr/local/nginx/conf
 
-COPY scripts/process_templates.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/process_templates.sh
+COPY --chmod=755 scripts/process_templates.sh /usr/local/bin/
 
 RUN mkdir -p /var/cache/nginx /var/log/nginx /var/lib/nginx/tmp && \
     chown -R nginx:nginx /var/cache/nginx /var/log/nginx /var/lib/nginx
