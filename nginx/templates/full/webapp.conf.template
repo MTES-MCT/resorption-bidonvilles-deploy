@@ -51,6 +51,9 @@ server {
 
     include common/ssl[.]conf;
 
+    # Authentification HTTP Basic facultative (préprod) : sans fichier, aucun effet.
+    include auth/basic_auth[.]conf;
+
     location /socket {
         proxy_pass ${RB_PROXY_WEBAPP_WEBSOCKET_URI};
         proxy_http_version 1.1;

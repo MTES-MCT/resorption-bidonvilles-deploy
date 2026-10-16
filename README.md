@@ -101,6 +101,22 @@ Résorption-bidonvilles fonctionne avec trois applicatifs distincts que vous dev
 - lancer des seeders via le service `rb_api` : `make prod exec rb_api yarn sequelize db:seed --seed db/seeders/...`
 - accéder à la base de données : `make prod exec rb_database_data bash`
 
+### 3. Protéger l'accès à la préproduction (facultatif)
+Le proxy peut exiger une authentification HTTP Basic avant tout chargement du webapp (`app.*`) et du site public. Elle est **activée par la simple présence** du fichier `data/auth/basic_auth.conf` : en production, ce fichier n'existe pas et rien ne change.
+
+Sur le serveur de préproduction (ces fichiers sont dans `data/`, ignoré par git : aucun identifiant n'est versionné) :
+```bash
+mkdir -p data/auth
+printf 'equipe:%s\n' "$(openssl passwd -apr1)" > data/auth/preprod.htpasswd
+printf 'auth_basic "Preproduction";\nauth_basic_user_file auth/preprod.htpasswd;\n' > data/auth/basic_auth.conf
+chmod 644 data/auth/preprod.htpasswd data/auth/basic_auth.conf
+make prod exec rb_proxy /usr/local/nginx/sbin/nginx -t
+make prod exec rb_proxy /usr/local/nginx/sbin/nginx -s reload
+```
+Les fichiers doivent être lisibles par l'utilisateur non privilégié du conteneur (`nginx`), d'où le `chmod 644`. Pour désactiver la protection : supprimer `data/auth/basic_auth.conf` puis recharger nginx.
+
+⚠️ Cette protection ne couvre **pas** l'API (`api.*`) : le navigateur appelle l'API sur un autre domaine et ne peut pas y envoyer d'identifiants Basic. L'API reste protégée par son seul JWT.
+
 ## 🧩 Liste des services montés
 
 Quel que soit l'environnement choisi, les services suivants seront montés :
@@ -245,6 +261,10 @@ Plusieurs remarques :
         <tr>
             <td>VUE_APP_API_URL</td>
             <td>URL vers l'API, ne finissant pas par un /. Exemple : https://api.resorption-bidonvilles.localhost</td>
+        </tr>
+        <tr>
+            <td>VITE_ENV_LABEL</td>
+            <td>Libellé de l'environnement (ex. `PRÉPROD`). S'il est renseigné, le webapp affiche un bandeau d'avertissement, un favicon distinct et préfixe le titre des pages. À laisser vide en production.</td>
         </tr>
         <tr>
             <td>VUE_APP_MATOMO_ON</td>
