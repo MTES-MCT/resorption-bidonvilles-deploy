@@ -18,6 +18,9 @@ services:
       - ${RB_PROXY_CONFIG_FOLDER}/common/nginx.conf:/usr/local/nginx/conf/nginx.conf:ro
       - ${RB_PROXY_CONFIG_FOLDER}/templates/${RB_PROXY_TEMPLATE}:/usr/local/nginx/conf/templates:ro
       - ${RB_DEPLOY_DATA_FOLDER}/ssl:/etc/ssl:ro
+      # Authentification HTTP Basic (préprod uniquement, voir README). Le dossier peut rester vide :
+      # sans basic_auth.conf, l'include des templates ne fait rien.
+      - ${RB_DEPLOY_DATA_FOLDER}/auth:/usr/local/nginx/conf/auth:ro
 
   rb_database_data:
     build:
