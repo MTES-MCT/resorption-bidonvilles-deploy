@@ -264,7 +264,7 @@ Plusieurs remarques :
         </tr>
         <tr>
             <td>VITE_ENV_LABEL</td>
-            <td>Libellé de l'environnement (ex. `PRÉPROD`). S'il est renseigné, le webapp affiche un bandeau d'avertissement, un favicon distinct et préfixe le titre des pages. À laisser vide en production.</td>
+            <td>Libellé de l'environnement (ex. `PRÉPROD`). S'il est renseigné, le webapp affiche un bandeau d'avertissement et préfixe le titre des pages. À laisser vide en production.</td>
         </tr>
         <tr>
             <td>VUE_APP_MATOMO_ON</td>
