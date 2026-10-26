@@ -117,6 +117,20 @@ Les fichiers doivent être lisibles par l'utilisateur non privilégié du conten
 
 ⚠️ Cette protection ne couvre **pas** l'API (`api.*`) : le navigateur appelle l'API sur un autre domaine et ne peut pas y envoyer d'identifiants Basic. L'API reste protégée par son seul JWT.
 
+#### Empêcher l'indexation par les moteurs de recherche
+En complément (et pour couvrir l'API, qui n'a pas de Basic Auth), le proxy peut ajouter l'en-tête `X-Robots-Tag: noindex, nofollow` à toutes ses réponses (webapp, site public et API). Comme le Basic Auth, il est **activé par la simple présence** du fichier `data/auth/noindex.conf` : en production, ce fichier n'existe pas et rien ne change.
+
+```bash
+mkdir -p data/auth
+printf 'add_header X-Robots-Tag "noindex, nofollow" always;\n' > data/auth/noindex.conf
+chmod 644 data/auth/noindex.conf
+make prod exec rb_proxy /usr/local/nginx/sbin/nginx -t
+make prod exec rb_proxy /usr/local/nginx/sbin/nginx -s reload
+```
+Pour désactiver : supprimer `data/auth/noindex.conf` puis recharger nginx.
+
+⚠️ Ne pas créer de `robots.txt` avec `Disallow: /` en parallèle : un robot qui n'a pas le droit de crawler une page ne lira jamais son `X-Robots-Tag`, et l'URL pourrait rester indexée. Si la préproduction a déjà été indexée, demander la suppression des URL dans Google Search Console et Bing Webmaster Tools.
+
 ## 🧩 Liste des services montés
 
 Quel que soit l'environnement choisi, les services suivants seront montés :

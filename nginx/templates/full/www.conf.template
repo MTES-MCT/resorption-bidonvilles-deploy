@@ -59,6 +59,8 @@ server {
         proxy_pass ${RB_PROXY_WWW_URI};
         proxy_cookie_flags ~ secure samesite=strict;
         include common/headers[.]conf;
+        # X-Robots-Tag facultatif (préprod) : sans fichier, aucun effet.
+        include auth/noindex[.]conf;
         add_header Content-Security-Policy "default-src 'none'; connect-src ws://localhost:*/_nuxt/ https://${RB_PROXY_API_HOST}/ ${RB_PROXY_MATOMO_HOST} https://${RB_PROXY_FRONTEND_HOST}/_nuxt/; font-src 'self'; img-src 'self' ${RB_PROXY_MATOMO_HOST}; media-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'";
         include naxsi/naxsi.rules;
     }

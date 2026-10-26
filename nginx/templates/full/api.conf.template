@@ -50,6 +50,8 @@ server {
     location / {
         proxy_pass ${RB_PROXY_API_URI};
         include common/headers[.]conf;
+        # X-Robots-Tag facultatif (préprod) : sans fichier, aucun effet.
+        include auth/noindex[.]conf;
         add_header Content-Security-Policy "default-src 'none';";
         include naxsi/naxsi.rules;
     }
