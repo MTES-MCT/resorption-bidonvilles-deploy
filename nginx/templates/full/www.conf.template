@@ -52,6 +52,9 @@ server {
 
     include common/ssl[.]conf;
 
+    # Authentification HTTP Basic facultative (préprod) : sans fichier, aucun effet.
+    include auth/basic_auth[.]conf;
+
     location / {
         proxy_pass ${RB_PROXY_WWW_URI};
         proxy_cookie_flags ~ secure samesite=strict;
