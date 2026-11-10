@@ -183,6 +183,10 @@ Plusieurs remarques :
             <td>Chemin absolu du dossier du conteneur dans lequel seront générés les fichiers de backup</td>
         </tr>
         <tr>
+            <td>RB_REMOTEBACKUP_TCHAP_ROOM_ID</td>
+            <td>Identifiant Matrix (room ID, de la forme <code>!xxxx:serveur</code>) du salon Tchap qui reçoit les alertes de la sauvegarde cloud (script <code>database/scripts/cloud_backup.sh</code>). L'URL du serveur et le jeton sont ceux de l'API (<code>RB_API_TCHAP_BASE_URL</code> et <code>RB_API_TCHAP_TOKEN</code>). En préproduction : le salon de test.</td>
+        </tr>
+        <tr>
             <td>RB_DATABASE_REMOTEBACKUP_KEY_ID<br/><em>prod-only</em></td>
             <td rowspan="6" align="center">Voir la page du wiki <a href="https://github.com/MTES-MCT/resorption-bidonvilles-deploy/wiki/Backup-%7C-Mise-en-place-de-la-backup-cloud#-configuration-de-rclone">Mise en place de la backup cloud</a></td>
         </tr>
@@ -317,8 +321,20 @@ Plusieurs remarques :
             <td>Mot de passe de l'utilisateur Mongo pour la base de données Agenda</td>
         </tr>
         <tr>
-            <td>RB_API_MATTERMOST_WEBHOOK<br/><em>prod-only</em></td>
-            <td>URL du webhook Mattermost pour les notifications</td>
+            <td>RB_API_ENV_LABEL</td>
+            <td>Étiquette de l'environnement (ex. `PREPROD`). <strong>Vide en production.</strong> Dès qu'elle est renseignée, toutes les notifications Tchap sont redirigées vers le salon de test (<code>RB_API_TCHAP_NOTIF_DEV_TEST</code>), même si <code>NODE_ENV=production</code> : les vrais salons ne sont utilisés que si <code>NODE_ENV=production</code> <em>et</em> que l'étiquette est vide.</td>
+        </tr>
+        <tr>
+            <td>RB_API_TCHAP_BASE_URL</td>
+            <td>URL du serveur Tchap (Matrix) qui émet les notifications. <code>https://</code> obligatoire. Une valeur invalide désactive l'envoi (erreur signalée à Sentry).</td>
+        </tr>
+        <tr>
+            <td>RB_API_TCHAP_TOKEN</td>
+            <td>Jeton d'accès du compte bot Tchap. Également utilisé par le script de sauvegarde cloud (<code>RB_REMOTEBACKUP_TCHAP_ROOM_ID</code>). Secret : ne jamais le versionner.</td>
+        </tr>
+        <tr>
+            <td>RB_API_TCHAP_NOTIF_*<br/>RB_API_TCHAP_TECH</td>
+            <td>Identifiants Matrix (room ID, de la forme <code>!xxxx:serveur</code>) des salons de notification, un par variable : <code>NOTIF_DEV_TEST</code>, <code>NOTIF_INVITATIONS_INTERVENANTS</code>, <code>NOTIF_NETTOYAGE_PIECES_JOINTES</code>, <code>NOTIF_INTERVENANTS_DECLARES</code>, <code>NOTIF_CANICULE</code>, <code>NOTIF_REQUETES_CADASTRE</code>, <code>NOTIF_ACTION_NOUVEAU_COMMENTAIRE</code>, <code>NOTIF_SITE_NOUVEAU_COMMENTAIRE</code>, <code>NOTIF_NOUVEAUX_UTILISATEURS</code>, <code>TECH</code>, <code>NOTIF_AUTO_DESACTIVATIONS</code>, <code>NOTIF_ANONYMISATION</code>, <code>NOTIF_PERSONNES_INVITEES</code>, <code>NOTIF_ABSENCE_PILOTE_ACTION</code>, <code>NOTIF_FERMETURE_SITES</code>, <code>NOTIF_REINSTALLATION</code>, <code>NOTIF_OUVERTURE_SITES</code>. Un alias (<code>#salon:serveur</code>) ou une URL est refusé. <strong>En préproduction, toutes ces variables doivent pointer vers le salon de test</strong> : ne jamais y copier les identifiants des salons de production.</td>
         </tr>
         <tr>
             <td>RB_API_SENTRY_DSN<br/><em>prod-only</em></td>
